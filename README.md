@@ -4,14 +4,16 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 ## App Info:
 
-* Team Name: TODO
-* App Name: TODO
+* Team Name: GoogleIt
+* App Name: Bevary
 * App Link: <https://TODO.com/>
 
 ### Students
 
-* First Last, x500@umn.edu
-* ...
+* Jonathan Leibovich, leibo023@umn.edu
+* Mike Cao, cao00121@umn.edu
+* Chris Liu, liux3770@umn.edu
+* Thien Nguyen, nguy3856@umn.edu
 
 
 ## Key Features
