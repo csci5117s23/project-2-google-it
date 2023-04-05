@@ -39,18 +39,23 @@ Which (if any) progressive web app feature(s) does your app support?
 
 
 ![Landing Page](./mockups/Landing%20Page.png)
+
 This is our landing page which will include the clerk Auth component
 
 ![List View](./mockups/List%20View.png)
+
 This is the List View which contains all previous entries sorted by ranking
 
 ![Map View](./mockups/Map%20View.png)
+
 This is the map view which allows you to see all of the locations of places you've rated
 
 ![Create Entry](./mockups/Create%20Bevary.png)
+
 This is how you will create entries to add to your Bevary
 
 ![Desktop View](./mockups/Desktop.png)
+
 This will be our view from a desktop, it simply combines the two main mobile views into a side by side view
 
 
