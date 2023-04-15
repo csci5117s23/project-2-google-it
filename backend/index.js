@@ -5,7 +5,7 @@
 */
 import {app, Datastore} from 'codehooks-js'
 import {crudlify} from 'codehooks-crudlify'
-import { date, object, string, bool } from 'yup';
+import { date, object, string, bool, number } from 'yup';
 import jwtDecode from 'jwt-decode';
 
 
@@ -60,8 +60,10 @@ import jwtDecode from 'jwt-decode';
 const bevEntry = object({
     bevName: string().required(),
 	locName: string().required(),
-	locAddress: string(),
-	userId: string().required(),
+	rating: number(),
+	lat: number(),
+	lng: number(),
+	userId: string(),
     createdOn: date().default(() => new Date()),
 })
 
