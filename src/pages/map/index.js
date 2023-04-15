@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import { GoogleMap, LoadScript, MarkerF, InfoWindow } from '@react-google-maps/api';
 import NavBar from '@/Components/nav';
 import { useAuth } from "@clerk/nextjs";
+import Header from '@/Components/header';
 //Clerk stuff commented out for now
 
 const containerStyle = {
@@ -60,11 +61,16 @@ export default function MyComponent() {
 	  }
 
 	if(loading){
-		return (<div>Loading...</div>)
+		
+		return (<>
+			<Header title={"Bevary"} />
+			<div>Loading...</div>
+		</>	
+		)
 	
 	} else{
 		return (<>
-  
+			<Header title={"Bevary"} />
 			<div style={{height: "100vh"}}>
 			<NavBar />
 			
