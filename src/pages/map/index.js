@@ -13,6 +13,7 @@ const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
 
 export default function MyComponent() {
 	// const { isLoaded, userId, sessionId, getToken } = useAuth();
+	console.log(process.env);
 	const [currentLocation, setCurrentLocation] = useState({
 		lat: -3.745,
 		lng: -38.523
@@ -38,8 +39,8 @@ export default function MyComponent() {
 		//const token = await getToken({template: "todoListTemplate"})
 		//setToken(token)
 		const fetchData = async () => {
-			console.log(API_ENDPOINT + "bevEntry")
-			const response = await fetch(API_ENDPOINT + "bevEntry", {
+			console.log(API_ENDPOINT + "/bevEntry")
+			const response = await fetch(API_ENDPOINT + "/bevEntry", {
 				'method':'GET',
 				'headers': {'x-apikey': API_KEY}
 			})
