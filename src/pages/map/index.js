@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { GoogleMap, LoadScript, MarkerF, InfoWindow } from '@react-google-maps/api';
-import NavBar from '@/Components/nav';
+import NavBar from '@/components/nav';
 import { useAuth } from "@clerk/nextjs";
 //Clerk stuff commented out for now
 

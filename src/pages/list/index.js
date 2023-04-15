@@ -3,9 +3,13 @@ import BeverageList from '@/components/beveragelist'
 export default function List() {
   // const { isLoaded, userId, sessionId, getToken} = useAuth();
 
+  const dummyData = [
+    {bevName: "Tequila Sunrise", locName: "Sal's Bar", rating: "4.5", createdOn: new Date()}, 
+    {bevName: "Blue Fishbowl", locName: "Burrito Loco", rating: "5.0", createdOn: new Date()}
+  ];
   return (
     <>
-      <BeverageList listItems={[1,2,3]}></BeverageList>
+      <BeverageList listItems={dummyData}></BeverageList>
     </>
   )
 }
