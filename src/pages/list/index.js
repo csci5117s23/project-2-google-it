@@ -5,7 +5,8 @@ export default function List() {
 
   const dummyData = [
     {bevName: "Tequila Sunrise", locName: "Sal's Bar", rating: "4.5", createdOn: new Date()}, 
-    {bevName: "Blue Fishbowl", locName: "Burrito Loco", rating: "5.0", createdOn: new Date()}
+    {bevName: "Blue Fishbowl", locName: "Burrito Loco", rating: "5.0", createdOn: new Date()},
+    {bevName: "Pink Fishbowl", locName: "Burrito Loco", rating: "4.3", createdOn: new Date()}, 
   ];
   return (
     <>
