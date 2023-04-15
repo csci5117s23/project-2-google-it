@@ -5,31 +5,30 @@ export default function MapInfoWindow({info}){
   const [isOpen, setIsOpen] = useState(false);
 
   function handleToggleOpen(){
-    console.log("hey here")
     setIsOpen(true);
   }
 
   
   function handleToggleClose(){
-    console.log("hey close")
     setIsOpen(false);
   }
   console.log(info);
   return (
     <>
-    <Marker
+    <MarkerF
         // key={this.props.index}
         position={{ lat: info["lat"], lng: info["lng"]}}
         // label={this.props.index.toString()}
         onClick={handleToggleOpen}
         onLoad={() => console.log("making marker")}>
-    </Marker>
-    {
-      isOpen &&
-    <InfoWindow position={{ lat: info["lat"], lng: info["lng"]}} >
-        <span>Something</span>
-    </InfoWindow>
-    }
+      {
+        isOpen &&
+      <InfoWindow position={{ lat: info["lat"], lng: info["lng"]}} onCloseClick={handleToggleClose}>
+          <span>Something</span>
+      </InfoWindow>
+      }
+    </MarkerF>
+    
   </>
 )
 }
