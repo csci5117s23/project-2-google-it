@@ -27,7 +27,7 @@ export default function MapInfoWindow({info}){
     {
       isOpen &&
     <InfoWindow position={{ lat: info["lat"], lng: info["lng"]}} >
-        <span>Something</dispanv>
+        <span>Something</span>
     </InfoWindow>
     }
   </>
