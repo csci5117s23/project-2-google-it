@@ -3,7 +3,7 @@ import { GoogleMap, LoadScript, MarkerF, InfoWindow, Marker } from '@react-googl
 import NavBar from '@/components/nav';
 import MapInfoWindow from '@/components/mapinfowindow';
 import { useAuth } from "@clerk/nextjs";
-import Header from '@/Components/header';
+import Header from '@/components/header';
 //Clerk stuff commented out for now
 
 const containerStyle = {
