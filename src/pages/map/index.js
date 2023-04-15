@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
-import { GoogleMap, LoadScript, MarkerF, InfoWindow } from '@react-google-maps/api';
-import NavBar from '@/Components/nav';
+import { GoogleMap, LoadScript, MarkerF, InfoWindow, Marker } from '@react-google-maps/api';
+import NavBar from '@/components/nav';
+import MapInfoWindow from '@/components/mapinfowindow';
 import { useAuth } from "@clerk/nextjs";
 //Clerk stuff commented out for now
 
@@ -83,18 +84,22 @@ export default function MyComponent() {
 						
 					}
 					return (
-						<>
-						<MarkerF position={position} onLoad={onMarkerLoad}/> 
-						{
-							showInfoBoxes ? <InfoWindow position={position} >
-							<React.Fragment>
-								{dict['bevName']} {'\n'}
-								We can add pictures here + Rating
-							</React.Fragment>
-						</InfoWindow> : null
-						}
-						</>
+						<MapInfoWindow info={position}></MapInfoWindow>
 					)
+				// 	return (
+				// 		<>
+				// 		<MarkerF position={position} onLoad={onMarkerLoad}/> 
+				// 		{
+				// 			showInfoBoxes ? <InfoWindow position={position} >
+				// 			<React.Fragment>
+				// 				{dict['bevName']} {'\n'}
+				// 				We can add pictures here + Rating
+				// 			</React.Fragment>
+				// 		</InfoWindow> : null
+				// 		}
+				// 		</>
+				// 	)
+				// })
 				})}
 
 				
