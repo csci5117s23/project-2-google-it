@@ -1,35 +1,27 @@
 import {React, useState} from 'react'
-import { MarkerF, InfoWindow, Marker, OverlayView } from "@react-google-maps/api";
+import { MarkerF, InfoWindow, Marker, OverlayView, InfoBox } from "@react-google-maps/api";
 import BevaryItem from "./listItem"
 
-export default function MapInfoWindow({info}){
+export default function MapInfoWindow({info, setOpen, idx, curOpen}){
   const [isOpen, setIsOpen] = useState(false);
 
   function handleToggleOpen(){
     setIsOpen(!isOpen);
+    setOpen(idx);
   }
 
-  
-  function handleToggleClose(){
-    setIsOpen(false);
-  }
   console.log(info);
   return (
     <>
     <MarkerF
-        // key={this.props.index}
         position={{ lat: info["lat"], lng: info["lng"]}}
-        // label={this.props.index.toString()}
         onClick={handleToggleOpen}
         onLoad={() => console.log("making marker")}>
       {
-        isOpen &&
+        isOpen && curOpen == idx &&
         <OverlayView mapPaneName={OverlayView.FLOAT_PANE} position={{ lat: info["lat"], lng: info["lng"]}} >
           <BevaryItem info={info}></BevaryItem>
         </OverlayView>
-      // <InfoWindow position={{ lat: info["lat"], lng: info["lng"]}} onCloseClick={handleToggleClose} style={{background:"red"}}>
-      //     <BevaryItem info={info}></BevaryItem>
-      // </InfoWindow>
       }
     </MarkerF>
     
