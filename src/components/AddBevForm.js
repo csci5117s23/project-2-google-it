@@ -24,10 +24,16 @@ export default function AddBevForm(){
 		fileInput.value = ''
 	}
 
+	const handleSubmit = async (event) => {
+		event.preventDefault();
+		console.log(event)
+	}
+
 
 
 	return (
 	<>
+		<form>
 		<div class="columns">
 			<div class="column">
 				<div class="is-hidden" id='photoPreviewDiv'>
@@ -49,20 +55,55 @@ export default function AddBevForm(){
 				</div>
 			</div>
 			<div class="column">
-			<div class="field">
-  				<label class="label">Drink Name</label>
-				<div class="control">
-					<input class="input" type="text" placeholder="Text input" />
+				<div class="field">
+					<label class="label">Drink Name</label>
+					<div class="control">
+						<input class="input" type="text" id="bevName" placeholder="Text input" />
+					</div>
 				</div>
-			</div>
-			<div class="field">
-  				<label class="label">Restaurant/Location</label>
-				<div class="control">
-					<input class="input" type="text" placeholder="Text input" />
+				<div class="field">
+					<label class="label">Restaurant/Location</label>
+					<div class="control">
+						<input id="bevLocation" class="input" type="text" placeholder="Text input" />
+					</div>
 				</div>
-			</div>
+				<div class="field">
+					<div class="columns">
+						<div class="column is-2">
+							<label class="label">Rating</label>
+							<div class="control has-icons-right">
+							<input id="bevRating" class="input" type="text" placeholder="Range 1-5"/>
+							</div>
+						</div>
+					</div>
+										{/* <div class="control">
+						<div class="select">
+							<select>
+								<option>5</option>
+								<option>4</option>
+								<option>3</option>
+								<option>2</option>
+								<option>1</option>
+							</select>
+						</div>
+					</div> */}
+				</div>
+				<div class="field">
+					<label class="label">Anything memorable to add?</label>
+					<div class="control">
+						<textarea class="textarea" placeholder="This beer sucked"></textarea>
+					</div>
+				</div>
+				
+
 			</div>
 		</div>
+		<div class="columns">
+			<div class="container">
+				<button onClick={handleSubmit} class="button is-success">Save Entry!</button>
+			</div>
+		</div>
+		</form>
 	</>
 	)
 
