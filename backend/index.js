@@ -60,9 +60,11 @@ import jwtDecode from 'jwt-decode';
 const bevEntry = object({
     bevName: string().required(),
 	locName: string().required(),
+	desc: string(),
 	rating: number(),
 	lat: number(),
 	lng: number(),
+	imgURL: string(),
 	userId: string(),
     createdOn: date().default(() => new Date()),
 })

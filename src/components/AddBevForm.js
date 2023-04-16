@@ -1,5 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import { GoogleMap, LoadScript, MarkerF, InfoWindow, Marker } from '@react-google-maps/api';
+import Resizer from "react-image-file-resizer";
+
+const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
 
 export default function AddBevForm(){
 	function handlePhotoUpload(){
@@ -26,6 +30,45 @@ export default function AddBevForm(){
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
+		const img = document.getElementsByClassName('file-input')[0].files[0]
+		const bevName = document.getElementById('bevName')
+		const bevLocation = document.getElementById('bevLocation')
+		const bevRating = document.getElementById('bevRating')
+		const bevDescription = document.getElementById('bevDescription')
+		const resizedImage = null;
+		// S/o Upper 5
+		Resizer.imageFileResizer(
+            img, //file name
+            300, //max pixel width
+            300, //max pixel height
+            "JPEG", //compression format
+            100, //quality
+            0, //rotation
+            (resizedFile) => {
+                //Callback function
+				resizedFile = URL.createObjectURL(resizedFile);
+            },
+            "file" //output type
+        );
+
+		const uploadData = {
+			bevName: bevName,
+			rating: bevRating,
+			locName: bevLocation,
+			desc: bevDescription,
+			img: resizedImage
+		}
+		const backendResponse = await fetch(API_ENDPOINT + "/bevEntry", {
+			'method':'POST',
+			'headers': {
+				'x-apikey': API_KEY,
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify(uploadData)
+		  })
+		  
+		const backendData = await backendResponse.json()
+		const bevID = data['_id']
 		console.log(event)
 	}
 
@@ -76,22 +119,11 @@ export default function AddBevForm(){
 							</div>
 						</div>
 					</div>
-										{/* <div class="control">
-						<div class="select">
-							<select>
-								<option>5</option>
-								<option>4</option>
-								<option>3</option>
-								<option>2</option>
-								<option>1</option>
-							</select>
-						</div>
-					</div> */}
 				</div>
 				<div class="field">
 					<label class="label">Anything memorable to add?</label>
 					<div class="control">
-						<textarea class="textarea" placeholder="This beer sucked"></textarea>
+						<textarea class="textarea" id="bevDescription" placeholder="This beer sucked"></textarea>
 					</div>
 				</div>
 				
