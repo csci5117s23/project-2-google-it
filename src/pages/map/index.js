@@ -84,13 +84,13 @@ export default function MyComponent() {
 				zoom={10}
 			  >
 				{markerData.map((dict) => {
-					const position = {
-						lat: dict['lat'],
-						lng: dict['lng']
+					// const position = {
+					// 	lat: dict['lat'],
+					// 	lng: dict['lng']
 						
-					}
+					// }
 					return (
-						<MapInfoWindow info={position}></MapInfoWindow>
+						<MapInfoWindow info={dict}></MapInfoWindow>
 					)
 				// 	return (
 				// 		<>

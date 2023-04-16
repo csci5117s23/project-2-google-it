@@ -8,7 +8,7 @@ export default function BeverageList({listItems, onRemove}) {
         if(i == listItems.length - 1){
             const col = (
                 <> 
-                    <div class="columns is-desktop" style={{marginLeft:"0"}}>
+                    <div class="columns is-desktop" style={{marginLeft:"0", marginRight:"0"}}>
                         <div class="column">
                                 <ListItem info={listItems[i]} onRemove={onRemove}></ListItem>
                         </div>
@@ -21,7 +21,7 @@ export default function BeverageList({listItems, onRemove}) {
         else {
             const col = (
                 <> 
-                    <div class="columns is-desktop" style={{marginLeft:"0"}}>
+                    <div class="columns is-desktop" style={{marginLeft:"0", marginRight:"0"}}>
                         <div class="column">
                                 <ListItem info={listItems[i]} onRemove={onRemove}></ListItem>
                         </div>
