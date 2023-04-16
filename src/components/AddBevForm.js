@@ -2,6 +2,11 @@ import React, {useEffect, useState} from 'react'
 import { GoogleMap, LoadScript, MarkerF, InfoWindow, Marker } from '@react-google-maps/api';
 import Resizer from "react-image-file-resizer";
 var AWS = require('aws-sdk');
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import { usePlacesWidget } from 'react-google-autocomplete';
+
+
+  
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
@@ -13,7 +18,22 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 });
 
 
+
 export default function AddBevForm(){
+	const [bevPos, setBevPos] = useState(null)
+	useEffect(() => {
+		document.getElementById('bevLocation').addEventListener('keyup',function() {
+			var input = document.getElementById('bevLocation');
+			var autocomplete = new google.maps.places.Autocomplete(input);
+			autocomplete.addListener("place_changed", () => {
+			
+				const place = autocomplete.getPlace();
+				setBevPos(place.geometry.location.toJSON())
+				console.log(place.geometry.location.toJSON())
+			})
+		})
+	})
+
 	function handlePhotoUpload(){
 		const fileInput = document.getElementsByClassName('file-input')[0]
 		const photoUploadDiv = document.getElementById('photoUpload')
@@ -50,6 +70,8 @@ export default function AddBevForm(){
 			"bevName": bevName,
 			"locName": bevLocation,
 			"rating": bevRating,
+			"lat": bevPos["lat"],
+			"lng": bevPos["lng"],
 			"desc": bevDescription
 		}
 		const backendResponse = await fetch(API_ENDPOINT + "/bevEntry", {
@@ -104,6 +126,7 @@ export default function AddBevForm(){
 	return (
 	<>
 	    <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEAEPMcY3DWMqfWJW_uIBxhOE3EeAdAXg&libraries=places" async defer></script>
 		<form>
 		<div class="columns">
 			<div class="column">
@@ -137,6 +160,7 @@ export default function AddBevForm(){
 					<div class="control">
 						<input id="bevLocation" class="input" type="text" placeholder="Text input" />
 					</div>
+					{/* <GooglePlacesAutocomplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} /> */}
 				</div>
 				<div class="field">
 					<div class="columns">
