@@ -22,7 +22,7 @@ export default function MyComponent() {
 	})
 	const [loading, setLoading] = useState(true)
 	const [markerData, setMarkerData] = useState(null)
-	const [showInfoBoxes, setShowInfo] = useState(true)
+	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	// const [userToken, setToken] = useState(null);
 	useEffect(() => {
 		if ("geolocation" in navigator) {
@@ -83,14 +83,9 @@ export default function MyComponent() {
 				center={currentLocation}
 				zoom={10}
 			  >
-				{markerData.map((dict) => {
-					const position = {
-						lat: dict['lat'],
-						lng: dict['lng']
-						
-					}
+				{markerData.map((dict, idx) => {
 					return (
-						<MapInfoWindow info={position}></MapInfoWindow>
+						<MapInfoWindow info={dict} setOpen={setOpenInfoBox} idx={idx} curOpen={openInfoBox}></MapInfoWindow>
 					)
 				// 	return (
 				// 		<>
