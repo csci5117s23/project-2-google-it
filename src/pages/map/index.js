@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import { GoogleMap, LoadScript, MarkerF, InfoWindow } from '@react-google-maps/api';
-import NavBar from '@/Components/nav';
+import { GoogleMap, LoadScript, MarkerF, InfoWindow, Marker } from '@react-google-maps/api';
+import NavBar from '@/components/nav';
+import MapInfoWindow from '@/components/mapinfowindow';
 import { useAuth } from "@clerk/nextjs";
+import Header from '@/components/header';
 //Clerk stuff commented out for now
 
 const containerStyle = {
@@ -20,7 +22,7 @@ export default function MyComponent() {
 	})
 	const [loading, setLoading] = useState(true)
 	const [markerData, setMarkerData] = useState(null)
-	const [showInfoBoxes, setShowInfo] = useState(true)
+	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	// const [userToken, setToken] = useState(null);
 	useEffect(() => {
 		if ("geolocation" in navigator) {
@@ -60,11 +62,16 @@ export default function MyComponent() {
 	  }
 
 	if(loading){
-		return (<div>Loading...</div>)
+		
+		return (<>
+			<Header title={"Bevary"} />
+			<div>Loading...</div>
+		</>	
+		)
 	
 	} else{
 		return (<>
-  
+			<Header title={"Bevary"} />
 			<div style={{height: "100vh"}}>
 			<NavBar />
 			
@@ -76,25 +83,24 @@ export default function MyComponent() {
 				center={currentLocation}
 				zoom={10}
 			  >
-				{markerData.map((dict) => {
-					const position = {
-						lat: dict['lat'],
-						lng: dict['lng']
-						
-					}
+				{markerData.map((dict, idx) => {
 					return (
-						<>
-						<MarkerF position={position} onLoad={onMarkerLoad}/> 
-						{
-							showInfoBoxes ? <InfoWindow position={position} >
-							<React.Fragment>
-								{dict['bevName']} {'\n'}
-								We can add pictures here + Rating
-							</React.Fragment>
-						</InfoWindow> : null
-						}
-						</>
+						<MapInfoWindow info={dict} setOpen={setOpenInfoBox} idx={idx} curOpen={openInfoBox}></MapInfoWindow>
 					)
+				// 	return (
+				// 		<>
+				// 		<MarkerF position={position} onLoad={onMarkerLoad}/> 
+				// 		{
+				// 			showInfoBoxes ? <InfoWindow position={position} >
+				// 			<React.Fragment>
+				// 				{dict['bevName']} {'\n'}
+				// 				We can add pictures here + Rating
+				// 			</React.Fragment>
+				// 		</InfoWindow> : null
+				// 		}
+				// 		</>
+				// 	)
+				// })
 				})}
 
 				
