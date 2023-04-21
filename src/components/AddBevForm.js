@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 
   
-
+const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
 const BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME;
@@ -132,11 +132,12 @@ export default function AddBevForm(){
 	if (loading){
 		return(<div>Loading!</div>)
 	} else {
+		const placeScript = 'https://maps.googleapis.com/maps/api/js?key='+ GOOGLE_API_KEY +'&libraries=places'
+		console.log(placeScript, GOOGLE_API_KEY)
 		return (
 			<>
 				<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-				<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEAEPMcY3DWMqfWJW_uIBxhOE3EeAdAXg&libraries=places" async defer></script>
-				<form>
+				<script src={placeScript} async defer></script>
 				<div class="columns">
 					<div class="column">
 						<div class="is-hidden" id='photoPreviewDiv'>
@@ -169,7 +170,6 @@ export default function AddBevForm(){
 							<div class="control">
 								<input id="bevLocation" class="input" type="text" placeholder="Text input" />
 							</div>
-							{/* <GooglePlacesAutocomplete apiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY} /> */}
 						</div>
 						<div class="field">
 							<div class="columns">
@@ -196,7 +196,6 @@ export default function AddBevForm(){
 						<button onClick={handleSubmit} class="button is-success">Save Entry!</button>
 					</div>
 				</div>
-				</form>
 			</>
 			)
 	}
