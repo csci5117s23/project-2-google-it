@@ -10,7 +10,6 @@ export default function MapInfoWindow({info, setOpen, idx, curOpen}){
     setOpen(idx);
   }
 
-  console.log(info);
   return (
     <>
     <MarkerF

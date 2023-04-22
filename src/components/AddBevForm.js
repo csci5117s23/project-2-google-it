@@ -5,6 +5,7 @@ var AWS = require('aws-sdk');
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import { usePlacesWidget } from 'react-google-autocomplete';
 import { useRouter } from 'next/router'
+import { useAuth } from "@clerk/nextjs";
 
 
   
@@ -24,6 +25,7 @@ export default function AddBevForm(){
 	const [bevPos, setBevPos] = useState(null)
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
+	const { isLoaded, userId, sessionId, getToken } = useAuth();
 	useEffect(() => {
 		const bevLoc = document.getElementById('bevLocation')
 		if (bevLoc){
@@ -72,19 +74,21 @@ export default function AddBevForm(){
 		const bevDescription = document.getElementById('bevDescription').value
 		const resizedImage = null;
 
-		var imgLocation = "bevary/user/"
+		var imgLocation = "bevary/" + userId + "/"
 		const uploadData = {
 			"bevName": bevName,
 			"locName": bevLocation,
 			"rating": bevRating,
 			"lat": bevPos["lat"],
 			"lng": bevPos["lng"],
-			"desc": bevDescription
+			"desc": bevDescription,
+			"userID": userId
 		}
+		const token = await getToken({template: "BevaryTemplate"})
 		const backendResponse = await fetch(API_ENDPOINT + "/bevEntry", {
 			'method':'POST',
 			'headers': {
-				'x-apikey': API_KEY,
+				'Authorization': 'Bearer ' + token,
 				'Content-Type': 'application/json'
 			},
 			body: JSON.stringify(uploadData)
@@ -93,7 +97,7 @@ export default function AddBevForm(){
 		  
 		const backendData = await backendResponse.json()
 		const bevID = backendData['_id']
-		imgLocation += bevID + '/' + img.name
+		imgLocation += bevID + '/' + encodeURI(img.name)
 		console.log(imgLocation, img)
 
 		var upload = new AWS.S3.ManagedUpload({
