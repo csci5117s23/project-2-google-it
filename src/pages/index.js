@@ -22,15 +22,19 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <Header title={"Bevary"} />
-        <div class=" is-centered">
-          <div class="block center-text">
-            <h3 class="title is-3">Welcome to Bevary!</h3>
-            <h4 class="subtitle is-5">Please Sign-In</h4>
+        <div className="slide-top-fade-in">
+          <Header title={"Bevary"} />
+          <div class="section is-centered">
+            <div class="block center-text">
+              <h3 class="title is-3" className="slide-top">
+                Welcome to Bevary!
+              </h3>
+              <h4 class="subtitle is-5">Please Sign-In</h4>
+            </div>
           </div>
-          <div className="center-element">
-            <SignIn />
-          </div>
+        </div>
+        <div className="fade-in center-element">
+          <SignIn />
         </div>
       </>
     );
