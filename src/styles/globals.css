@@ -9,3 +9,57 @@
   justify-content: center;
   align-items: center;
 }
+
+.drink-background {
+  z-index: -1;
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Fancy css for animations */
+
+@keyframes slide-top-fade-in {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-bottom-fade-in {
+  0% {
+    transform: translateY(200%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Animation classes */
+.slide-top-fade-in {
+  animation: 1s ease-in-out 0s 1 slide-top-fade-in;
+}
+
+.slide-bottom-fade-in {
+  animation: 2.5s ease-in-out -1s 1 slide-bottom-fade-in;
+}
+
+.fade-in {
+  animation: 1s ease-in-out 1s 1 both fade-in;
+}
