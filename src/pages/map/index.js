@@ -22,6 +22,7 @@ export default function MyComponent() {
 	})
 	const [loading, setLoading] = useState(true)
 	const [markerData, setMarkerData] = useState(null)
+	const [map, setMap] = useState(null)
 	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	// const [userToken, setToken] = useState(null);
 	useEffect(() => {
@@ -47,6 +48,19 @@ export default function MyComponent() {
 				'headers': {'x-apikey': API_KEY}
 			})
 			const data = await response.json()
+			var locationMap = new Map();
+			data.map(entry => {
+				const lat = entry["lat"];
+				const lng = entry["lng"];
+				const key = lat + "," + lng
+				if(!locationMap.has(key)){
+					locationMap.set(key, [entry]);
+				}
+				else {
+					locationMap.set(key, locationMap.get(key).concat(entry));
+				}
+			});
+			setMap(locationMap);
 			setMarkerData(data)
 			setLoading(false)  
 		}
@@ -82,26 +96,19 @@ export default function MyComponent() {
 				mapContainerStyle={containerStyle}
 				center={currentLocation}
 				zoom={10}
+				options = {
+					{
+						gestureHandling: "greedy"
+					}
+				}
 			  >
-				{markerData.map((dict, idx) => {
-					return (
-						<MapInfoWindow info={dict} setOpen={setOpenInfoBox} idx={idx} curOpen={openInfoBox}></MapInfoWindow>
-					)
-				// 	return (
-				// 		<>
-				// 		<MarkerF position={position} onLoad={onMarkerLoad}/> 
-				// 		{
-				// 			showInfoBoxes ? <InfoWindow position={position} >
-				// 			<React.Fragment>
-				// 				{dict['bevName']} {'\n'}
-				// 				We can add pictures here + Rating
-				// 			</React.Fragment>
-				// 		</InfoWindow> : null
-				// 		}
-				// 		</>
-				// 	)
-				// })
-				})}
+				{
+					[...map].map(entry=> {
+						return (
+							<MapInfoWindow info={entry[1]} setOpen={setOpenInfoBox} idx={entry[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
+						)
+					})
+				}
 
 				
 			  </GoogleMap>
