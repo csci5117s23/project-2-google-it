@@ -69,6 +69,7 @@ const bevEntry = object({
 	userId: string(),
 	private: bool().required().default(() => true),
     createdOn: date().default(() => new Date()),
+	private: bool().default(true)
 })
 
 // Use Crudlify to create a REST API for any collection
