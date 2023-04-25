@@ -60,6 +60,7 @@ import jwtDecode from 'jwt-decode';
 const bevEntry = object({
     bevName: string().required(),
 	locName: string().required(),
+	userId: string().required(),
 	desc: string(),
 	rating: number(),
 	lat: number(),
