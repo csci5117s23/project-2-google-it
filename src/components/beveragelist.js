@@ -1,7 +1,8 @@
 import {React} from 'react'
 import ListItem from './listItem';
 import 'bulma/css/bulma.min.css';
-export default function BeverageList({listItems, onRemove}) {
+import DeleteAndEditButtons from './deleteAndEditButtons';
+export default function BeverageList({listItems, deleteEntry}) {
     var columns = [];
 
     for (let i = 0; i < listItems.length; i+= 2){
@@ -10,7 +11,8 @@ export default function BeverageList({listItems, onRemove}) {
                 <> 
                     <div class="columns is-desktop" style={{marginLeft:"0", marginRight:"0"}}>
                         <div class="column">
-                                <ListItem info={listItems[i]} onRemove={onRemove}></ListItem>
+                                <ListItem info={listItems[i]}></ListItem>
+								<DeleteAndEditButtons info={listItems[i]} deleteEntry={deleteEntry} />
                         </div>
                         <div class="column">
                         </div>
@@ -23,10 +25,12 @@ export default function BeverageList({listItems, onRemove}) {
                 <> 
                     <div class="columns is-desktop" style={{marginLeft:"0", marginRight:"0"}}>
                         <div class="column">
-                                <ListItem info={listItems[i]} onRemove={onRemove}></ListItem>
+                                <ListItem info={listItems[i]}></ListItem>
+								<DeleteAndEditButtons info={listItems[i]} deleteEntry={deleteEntry} />
                         </div>
                         <div class="column">
-                            <ListItem info={listItems[i + 1]} onRemove={onRemove}></ListItem>
+                            <ListItem info={listItems[i + 1]}></ListItem>
+							<DeleteAndEditButtons info={listItems[i]} deleteEntry={deleteEntry} />
                         </div>
                     </div>
                 </>);
@@ -38,26 +42,6 @@ export default function BeverageList({listItems, onRemove}) {
         <>
             {columns.map(column => column)}
         </>
-        
-        // <div class="columns is-desktop">
-        //     <div class="column">
-        //         {l1.map(item => (
-        //             <ListItem info={item} onRemove={onRemove}></ListItem>
-        //         ))}
-        //     </div>
-        //     <div class="column">
-        //         {l2.map(item => (
-        //             <ListItem info={item} onRemove={onRemove}></ListItem>
-        //         ))}
-        //     </div>
-        // </div>
-    // <ul className="content" style={{margin:"0 6%"}}>
-    //     {listItems.map(item => (
-    //         <li> 
-    //             <ListItem info={item} onRemove={onRemove}></ListItem>
-    //         </li>
-    //     ))}
-    // </ul>
     );
     
 }

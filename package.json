@@ -24,6 +24,7 @@
     "react-google-autocomplete": "^2.7.3",
     "react-google-places-autocomplete": "^4.0.0",
     "react-image-file-resizer": "^0.4.8",
+    "react-rating-stars-component": "^2.2.0",
     "sass": "^1.62.0",
     "yup": "^1.1.1"
   }

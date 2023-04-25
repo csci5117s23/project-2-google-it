@@ -2,7 +2,7 @@ import {React, useState} from 'react'
 import 'bulma/css/bulma.min.css';
 // import { useAuth } from '@clerk/nextjs';
 
-export default function ListItem({info, onRemove}) {
+export default function ListItem({info}) {
   return (
     <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
