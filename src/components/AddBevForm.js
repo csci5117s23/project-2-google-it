@@ -120,8 +120,8 @@ export default function AddBevForm() {
       bevName: bevName,
       locName: bevLocation,
       rating: bevRating,
-      lat: bevPos["lat"],
-      lng: bevPos["lng"],
+      lat: bevPos["lat"].toFixed(4),
+      lng: bevPos["lng"].toFixed(4),
       desc: bevDescription,
       userID: userId,
 	  private: !publicPost
