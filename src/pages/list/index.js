@@ -1,4 +1,5 @@
 // import { useAuth } from '@clerk/nextjs';
+import NavBar from '@/components/nav';
 import BeverageList from '@/components/beveragelist'
 export default function List() {
   // const { isLoaded, userId, sessionId, getToken} = useAuth();
@@ -11,6 +12,7 @@ export default function List() {
   return (
     <>
       <BeverageList listItems={dummyData}></BeverageList>
+      <NavBar></NavBar>
     </>
   )
 }
