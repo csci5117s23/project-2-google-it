@@ -67,7 +67,6 @@ const bevEntry = object({
 	lng: number(),
 	imgURL: string(),
 	userId: string(),
-	private: bool().required().default(() => true),
     createdOn: date().default(() => new Date()),
 	private: bool().default(true)
 })
