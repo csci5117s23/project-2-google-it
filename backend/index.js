@@ -67,6 +67,7 @@ const bevEntry = object({
 	imgURL: string(),
 	userId: string(),
     createdOn: date().default(() => new Date()),
+	private: bool().default(true)
 })
 
 // Use Crudlify to create a REST API for any collection
