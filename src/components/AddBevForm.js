@@ -3,6 +3,7 @@ var AWS = require("aws-sdk");
 import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
+import ReactStars from "react-rating-stars-component";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -18,6 +19,7 @@ export default function AddBevForm() {
   const [bevPos, setBevPos] = useState(null);
   const [toggleLabel, setToggleLabel] = useState("Private");
   const [publicPost, setPublicPost] = useState(false)
+  const [ratingValue, setRatingValue] = useState(0)
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
@@ -44,6 +46,10 @@ export default function AddBevForm() {
 	else{
 		setToggleLabel("Private")
 	}
+  };
+
+  const ratingChanged = (newRating) => {
+	setRatingValue(newRating)
   };
 
   function handlePhotoUpload() {
@@ -74,7 +80,7 @@ export default function AddBevForm() {
     const img = document.getElementsByClassName("file-input")[0].files[0];
     const bevName = document.getElementById("bevName").value;
     const bevLocation = document.getElementById("bevLocation").value;
-    const bevRating = document.getElementById("bevRating").value;
+    const bevRating = ratingValue;
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
     const uploadData = {
@@ -157,7 +163,6 @@ export default function AddBevForm() {
       "https://maps.googleapis.com/maps/api/js?key=" +
       GOOGLE_API_KEY +
       "&libraries=places";
-    console.log(placeScript, GOOGLE_API_KEY);
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
@@ -226,7 +231,13 @@ export default function AddBevForm() {
               <div class="field">
                 <label class="label">Rating (1-5)</label>
                 <div class="control">
-                  <input id="bevRating" class="input" type="text" required />
+					<ReactStars
+						count={5}
+						isHalf={true}
+						onChange={ratingChanged}
+						size={24}
+						activeColor="#ffd700"
+					/>
                 </div>
               </div>
               <div class="field">
