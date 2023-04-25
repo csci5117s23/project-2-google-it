@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  MarkerF,
-  InfoWindow,
-  Marker,
-} from "@react-google-maps/api";
-import Resizer from "react-image-file-resizer";
 var AWS = require("aws-sdk");
-import GooglePlacesAutocomplete from "react-google-places-autocomplete";
-import { usePlacesWidget } from "react-google-autocomplete";
 import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
+import Toggle from "./Toggle";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -25,6 +16,8 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 
 export default function AddBevForm() {
   const [bevPos, setBevPos] = useState(null);
+  const [toggleLabel, setToggleLabel] = useState("Private");
+  const [publicPost, setPublicPost] = useState(false)
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
@@ -42,6 +35,16 @@ export default function AddBevForm() {
       });
     }
   });
+
+  const toggleState = (state) => {
+	setPublicPost(state)
+	if (state){
+		setToggleLabel("Public")
+	}
+	else{
+		setToggleLabel("Private")
+	}
+  };
 
   function handlePhotoUpload() {
     const fileInput = document.getElementsByClassName("file-input")[0];
@@ -82,6 +85,7 @@ export default function AddBevForm() {
       lng: bevPos["lng"],
       desc: bevDescription,
       userID: userId,
+	  private: !publicPost
     };
 
     const token = await getToken({ template: "BevaryTemplate" });
@@ -97,7 +101,8 @@ export default function AddBevForm() {
     const backendData = await backendResponse.json();
     if (img) {
       const bevID = backendData["_id"];
-      imgLocation += bevID + "/" + encodeURI(img.name);
+	  // https://stackoverflow.com/questions/3486625/remove-illegal-url-characters-with-javascript
+      imgLocation += bevID + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, '');
       console.log(imgLocation, img);
 
       var upload = new AWS.S3.ManagedUpload({
@@ -144,6 +149,7 @@ export default function AddBevForm() {
     }
   };
 
+
   if (loading) {
     return <div>Loading!</div>;
   } else {
@@ -187,17 +193,23 @@ export default function AddBevForm() {
               </div>
             </div>
             <div class="column">
+				<div class="field">
+					<label class="label">Should this post be private or public?</label>
+					<div class="control">
+					<Toggle label={toggleLabel} toggled={false} onClick={toggleState} />
+					</div>
+              	</div>
               <div class="field">
-                <label class="label">Drink Name</label>
-                <div class="control">
-                  <input
-                    class="input"
-                    type="text"
-                    id="bevName"
-                    placeholder="Text input"
-                    required
-                  />
-                </div>
+					<label class="label">Drink Name</label>
+					<div class="control">
+					<input
+						class="input"
+						type="text"
+						id="bevName"
+						placeholder="Text input"
+						required
+					/>
+					</div>
               </div>
               <div class="field">
                 <label class="label">Restaurant/Location</label>
