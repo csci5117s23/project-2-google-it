@@ -52,6 +52,39 @@ export default function AddBevForm() {
 	setRatingValue(newRating)
   };
 
+  const getCurrentLocation = async () => {
+	if ("geolocation" in navigator) {
+		var input = document.getElementById("bevLocation");
+		console.log("Available");
+		input.value = "Getting Current Location Address"
+		var lat = 0
+		var lng = 0
+		navigator.geolocation.getCurrentPosition(async function(position) {
+			lat = position.coords.latitude
+			lng = position.coords.longitude
+			console.log(lat, lng)
+			setBevPos({
+				lat: lat,
+				lng: lng
+			})
+
+			console.log('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + String(lat) + ','  + String(lng) + "&key=" + GOOGLE_API_KEY)
+			const response = await fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + String(lat) + ','  + String(lng) + "&key=" + GOOGLE_API_KEY, {
+				'method':'GET',
+			})
+			const data = await response.json()
+			console.log(data)
+			input.value = data.results[0].formatted_address
+
+		});
+		
+		
+	} 
+	else {
+		alert("Using Current Location is not available");
+	}
+  }
+
   function handlePhotoUpload() {
     const fileInput = document.getElementsByClassName("file-input")[0];
     const photoUploadDiv = document.getElementById("photoUpload");
@@ -172,7 +205,7 @@ export default function AddBevForm() {
             <div class="column">
               <div class="is-hidden" id="photoPreviewDiv">
                 <img class="image is-128x128" id="imgPreview" />
-                <button
+                <button type="button"
                   class="button is-large is-danger is-fullwidth"
                   onClick={handleNewPhoto}
                 >
@@ -226,6 +259,7 @@ export default function AddBevForm() {
                     placeholder="Text input"
                     required
                   />
+				  <button type="button" onClick={getCurrentLocation} class="button is-link">Use Current Location</button>
                 </div>
               </div>
               <div class="field">
@@ -254,7 +288,7 @@ export default function AddBevForm() {
           </div>
           <div class="columns">
             <div class="container">
-              <button onClick={handleSubmit} class="button is-success">
+              <button type="submit" onClick={handleSubmit} class="button is-success">
                 Save Entry!
               </button>
             </div>
