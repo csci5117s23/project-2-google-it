@@ -20,7 +20,7 @@ export default function MyComponent() {
 		lng: -38.523
 	})
 	const [loading, setLoading] = useState(true)
-	const [markerData, setMarkerData] = useState(null)
+	const [useMarkerData, setUserMarkerData] = useState(null)
 	const [map, setMap] = useState(null)
 	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	const [userToken, setToken] = useState(null);
@@ -43,7 +43,8 @@ export default function MyComponent() {
 			const token = await getToken({template: "BevaryTemplate"})
 			setToken(token)
 			console.log(API_ENDPOINT + "/bevEntry")
-			const response = await fetch(API_ENDPOINT + "/bevEntry", {
+			// THIS NEEDS AUTH
+			const response = await fetch(API_ENDPOINT + "/bevEntry?userId=" + userId, {
 				'method':'GET',
 				'headers': {'Authorization': 'Bearer ' + token}
 			})
@@ -52,7 +53,8 @@ export default function MyComponent() {
 			data.map(entry => {
 				const lat = entry["lat"];
 				const lng = entry["lng"];
-				const key = lat + "," + lng
+				const key = lat + "," + lng;
+				entry["owner"] = "user";
 				if(!locationMap.has(key)){
 					locationMap.set(key, [entry]);
 				}
@@ -61,7 +63,7 @@ export default function MyComponent() {
 				}
 			});
 			setMap(locationMap);
-			setMarkerData(data)
+			setUserMarkerData(data)
 			setLoading(false)  
 		}
 		fetchData();
@@ -99,7 +101,37 @@ export default function MyComponent() {
 			})
 		}
 		</GoogleMap>
+
 	}
+	const fetchPublicData = async () => {
+		console.log(API_ENDPOINT + "/bevEntry")
+		// NEEDS AUTH
+		const response = await fetch(API_ENDPOINT + "/bevEntry?private=false", {
+			'method':'GET',
+			'headers': {'x-apikey': API_KEY}
+		})
+		const data = await response.json()
+		var locationMap = new Map();
+		data.map(entry => {
+			const lat = entry["lat"];
+			const lng = entry["lng"];
+			const key = lat + "," + lng;
+			entry["owner"] = "other";
+			if(!locationMap.has(key)){
+				locationMap.set(key, locationMap.get(key).concat(entry));
+			}
+		});
+		setMap(locationMap);
+		setUserMarkerData(data)
+		setLoading(false)  
+	}
+
+	const onMarkerLoad = (marker) => {
+		console.log("marker: ", marker);
+	};
+	const onInfoLoad = infoWindow => {
+		console.log('infoWindow: ', infoWindow)
+	  }
 
 	if(loading){
 		
@@ -110,14 +142,21 @@ export default function MyComponent() {
 		)
 	
 	} else{
-		return (<>
-			<Header title={"Bevary"} />
-			<div style={{height: "100vh"}}>
-			<NavBar />
-			{isLoaded ? renderMap() : <div>Google Maps is unavailable at the moment</div>}
-			</div>
+		return (
+			<>
+				<Header title={"Bevary"} />
+				<div style={{height: "100vh"}}>
+					<div style={{textAlign:"center"}}>
+						<label>
+							<input type="checkbox" style={{margin:"3px"}}/>
+							See nearby entries
+						</label>
+					</div>
+					<NavBar />
+					{isLoaded ? renderMap() : <div>Google Maps is unavailable at the moment</div>}
+				</div>
 			</>
-		  )
+		)
 	}
   
 }
