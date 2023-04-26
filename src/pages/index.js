@@ -22,7 +22,7 @@ export default function Home() {
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <div className="drink-background slide-bottom-fade-in">
+        <div className="drinkBackground slideBottomFadeIn">
           <Image
             src="/icon-background.jpg"
             layout="fill"
@@ -30,18 +30,16 @@ export default function Home() {
             alt="background photo of drinks"
           />
         </div>
-        <div className="slide-top-fade-in">
+        <div className="slideTopFadeIn">
           <Header title={"Bevary"} />
           <div class="section is-centered">
-            <div class="hero is-link py-4 center-text">
-              <h3 class="title" className="slide-top">
-                Welcome to Bevary!
-              </h3>
+            <div class="hero is-link py-4 centerText">
+              <h3 class="title">Welcome to Bevary!</h3>
               <h4 class="subtitle is-5">Please Sign-In</h4>
             </div>
           </div>
         </div>
-        <div className="fade-in center-element">
+        <div className="fadeIn centerElement">
           <SignIn />
         </div>
       </>
