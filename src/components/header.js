@@ -13,6 +13,7 @@ export default function Header({ title }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          fontWeight: "bold",
         }}
       >
         <Icon />
