@@ -54,9 +54,9 @@ export default function List() {
   return (
     <>
 		<Header title={"Bevary"} />
+      <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
       <div class="spacing"></div>
       <NavBar></NavBar>
-      <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
     </>
   )
 }
