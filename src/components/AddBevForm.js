@@ -31,8 +31,15 @@ export default function AddBevForm() {
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-          setBevPos(place.geometry.location.toJSON());
-          console.log(place.geometry.location.toJSON());
+		  console.log(place.geometry)
+		  if (place.geometry){
+			setBevPos(place.geometry.location.toJSON());
+          	console.log(place.geometry.location.toJSON());
+		  }
+		  else{
+			// alert("Not a valid location chosen")
+		  }
+          
         });
       });
     }
@@ -126,10 +133,16 @@ export default function AddBevForm() {
     const bevRating = ratingValue;
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
-    if (bevLocation === "" || bevName === "" || bevRating === 0) {
-      alert("Please give the bev a name, location, and rating");
+    if (bevName === "") {
+      alert("A drink name is required to save an entry");
+	  setLoading(false);
       return;
     }
+	if (bevLocation === "" || bevPos === null) {
+		alert("A location is required to save an entry. A location must be chosen through the address recommendations or the current location button");
+		setLoading(false);
+		return;
+	}
     const uploadData = {
       bevName: bevName,
       locName: bevLocation,
@@ -315,7 +328,9 @@ export default function AddBevForm() {
                 </div>
               </div>
 
-              <div class="field">
+              
+            </form>
+			<div class="field">
                 <div class="control">
                   <button
                     type="submit"
@@ -326,7 +341,6 @@ export default function AddBevForm() {
                   </button>
                 </div>
               </div>
-            </form>
           </div>
         </div>
       </>
