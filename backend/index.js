@@ -60,6 +60,7 @@ import jwtDecode from 'jwt-decode';
 const bevEntry = object({
     bevName: string().required(),
 	locName: string().required(),
+	userId: string().required(),
 	desc: string(),
 	rating: number(),
 	lat: number(),
@@ -67,6 +68,7 @@ const bevEntry = object({
 	imgURL: string(),
 	userId: string(),
     createdOn: date().default(() => new Date()),
+	private: bool().default(true)
 })
 
 // Use Crudlify to create a REST API for any collection
