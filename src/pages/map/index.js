@@ -18,10 +18,13 @@ export default function MyComponent() {
 	const [currentLocation, setCurrentLocation] = useState({
 		lat: -3.745,
 		lng: -38.523
-	})
-	const [loading, setLoading] = useState(true)
-	const [useMarkerData, setUserMarkerData] = useState(null)
-	const [map, setMap] = useState(null)
+	});
+	const [loading, setLoading] = useState(true);
+	const [useMarkerData, setUserMarkerData] = useState(null);
+	const [userMap, setUserMap] = useState(null);
+	const [publicMap, setPublicMap] = useState(null);
+	const [displayMap, setDisplayMap] = useState(null);
+	const [checked, setChecked] = useState(false);
 	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	const [userToken, setToken] = useState(null);
 	useEffect(() => {
@@ -40,34 +43,66 @@ export default function MyComponent() {
 		}
 		
 		const fetchData = async () => {
-			const token = await getToken({template: "BevaryTemplate"})
-			setToken(token)
-			console.log(API_ENDPOINT + "/bevEntry")
-			// THIS NEEDS AUTH
-			const response = await fetch(API_ENDPOINT + "/bevEntry?userId=" + userId, {
-				'method':'GET',
-				'headers': {'Authorization': 'Bearer ' + token}
-			})
-			const data = await response.json()
-			var locationMap = new Map();
-			data.map(entry => {
-				const lat = entry["lat"];
-				const lng = entry["lng"];
-				const key = lat + "," + lng;
-				entry["owner"] = "user";
-				if(!locationMap.has(key)){
-					locationMap.set(key, [entry]);
-				}
-				else {
-					locationMap.set(key, locationMap.get(key).concat(entry));
-				}
-			});
-			setMap(locationMap);
-			setUserMarkerData(data)
-			setLoading(false)  
+			if(userId){
+				// Fetch user entries
+				const token = await getToken({template: "BevaryTemplate"})
+				setToken(token)
+				console.log(API_ENDPOINT + "/bevEntry")
+				// THIS NEEDS AUTH
+				const userResponse = await fetch(API_ENDPOINT + "/bevEntry?userID=" + userId, {
+					'method':'GET',
+					'headers': {'Authorization': 'Bearer ' + token}
+				})
+				const userData = await userResponse.json()
+				var userMap = new Map();
+				userData.map(entry => {
+					const lat = entry["lat"];
+					const lng = entry["lng"];
+					const key = lat + "," + lng;
+					entry["personal"] = true;
+					if(!userMap.has(key)){
+						userMap.set(key, [entry]);
+					}
+					else {
+						userMap.set(key, userMap.get(key).concat(entry));
+					}
+				});
+				setUserMap(userMap);
+				setDisplayMap(userMap);
+				setUserMarkerData(userData);
+				setLoading(false);	
+
+				// Fetch public entries
+				// NEEDS AUTH
+				// Maybe need custom endpoint to retrieve public entries not owned by the user
+				const publicResponse = await fetch(API_ENDPOINT + "/bevEntry?private=false", {
+					'method':'GET',
+					'headers': {'x-apikey': API_KEY}
+				})
+				const publicData = await publicResponse.json()
+				var publicMap = new Map(userMap);
+				const filteredData = publicData.filter(item => item["userID"] != userId)
+
+				filteredData.map(entry => {
+					const lat = entry["lat"];
+					const lng = entry["lng"];
+					const key = lat + "," + lng;
+					entry["personal"] = false;
+					if(!publicMap.has(key)){
+						publicMap.set(key, [entry]);
+					}
+					else {
+						publicMap.set(key, publicMap.get(key).concat(entry));
+					}
+				});
+				setPublicMap(publicMap);
+				setLoading(false);
+				console.log(publicMap);  
+			}
 		}
+
 		fetchData();
-	}, []);
+	}, [userId]);
 
 	const { mapIsLoaded, loadError } = useJsApiLoader({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
@@ -89,12 +124,68 @@ export default function MyComponent() {
 		zoom={10}
 		options = {
 			{
-				gestureHandling: "greedy"
+				gestureHandling: "greedy",
+				styles: [
+					{
+					  "featureType": "administrative",
+					  "elementType": "geometry",
+					  "stylers": [
+						{
+						  "visibility": "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "poi",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "road",
+					  elementType: "labels.icon",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "transit",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					}
+				  ]
+				// styles:[
+				// 	{
+				// 	  featureType: "all",
+				// 	  elementType: "labels.text",
+				// 	  stylers: [
+				// 		{
+				// 		  visibility: "off"
+				// 		}
+				// 	  ]
+				// 	},
+				// 	{
+				// 	  featureType: "poi",
+				// 	  elementType: "labels.icon",
+				// 	  stylers: [
+				// 		{
+				// 		  visibility: "off"
+				// 		}
+				// 	  ]
+				// 	}
+				//   ]
 			}
 		}
 	  >
 		{
-			[...map].map(entry=> {
+			[...displayMap].map(entry=> {
 				return (
 					<MapInfoWindow info={entry[1]} setOpen={setOpenInfoBox} idx={entry[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
 				)
@@ -103,27 +194,15 @@ export default function MyComponent() {
 		</GoogleMap>
 
 	}
-	const fetchPublicData = async () => {
-		console.log(API_ENDPOINT + "/bevEntry")
-		// NEEDS AUTH
-		const response = await fetch(API_ENDPOINT + "/bevEntry?private=false", {
-			'method':'GET',
-			'headers': {'x-apikey': API_KEY}
-		})
-		const data = await response.json()
-		var locationMap = new Map();
-		data.map(entry => {
-			const lat = entry["lat"];
-			const lng = entry["lng"];
-			const key = lat + "," + lng;
-			entry["owner"] = "other";
-			if(!locationMap.has(key)){
-				locationMap.set(key, locationMap.get(key).concat(entry));
-			}
-		});
-		setMap(locationMap);
-		setUserMarkerData(data)
-		setLoading(false)  
+
+	function checkBox(){
+		if(checked){
+			setDisplayMap(userMap);
+		}
+		else {
+			setDisplayMap(publicMap);
+		}
+		setChecked(!checked);
 	}
 
 	const onMarkerLoad = (marker) => {
@@ -148,7 +227,7 @@ export default function MyComponent() {
 				<div style={{height: "100vh"}}>
 					<div style={{textAlign:"center"}}>
 						<label>
-							<input type="checkbox" style={{margin:"3px"}}/>
+							<input type="checkbox" style={{margin:"3px"}} checked={checked} onClick={checkBox}/>
 							See nearby entries
 						</label>
 					</div>
