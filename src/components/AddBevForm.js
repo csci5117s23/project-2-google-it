@@ -127,8 +127,7 @@ export default function AddBevForm() {
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
     if (bevLocation === "" || bevName === "" || bevRating === 0) {
-      alert("Please fill out all fields");
-      setLoading(false);
+      alert("Please give the bev a name, location, and rating");
       return;
     }
     const uploadData = {
