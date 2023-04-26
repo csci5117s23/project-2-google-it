@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import BeverageList from '@/components/beveragelist'
 import { useAuth } from "@clerk/nextjs";
+import Header from '@/components/header';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
@@ -48,7 +49,10 @@ export default function List() {
 
   return (
     <>
+		<Header title={"Bevary"} />
       <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
+      <div class="spacing"></div>
+      <NavBar></NavBar>
     </>
   )
 }
