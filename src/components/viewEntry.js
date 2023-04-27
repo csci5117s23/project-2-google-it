@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useAuth } from "@clerk/nextjs";
 import ReactStars from "react-rating-stars-component";
 import { GoogleMap, LoadScript, LoadScriptNext, MarkerF, InfoWindow, Marker, useJsApiLoader } from '@react-google-maps/api';
+import EditBevButton from './editBevButton';
 
 const containerStyle = {
 	width: '400px',
@@ -15,7 +16,7 @@ const containerStyle = {
   };
 
 
-export default function ViewEntry({data}){
+export default function ViewEntry({data, canEdit}){
 	console.log(data)
 	var date = new Date(data['createdOn'])
 
@@ -56,6 +57,10 @@ export default function ViewEntry({data}){
 				</GoogleMap>
 			</LoadScriptNext>}
 		</div>
+		<div>
+			{canEdit ? <EditBevButton info={data}/> : <></>}
+		</div>
+		
 	</div>
 		
 	</>)

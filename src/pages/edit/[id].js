@@ -7,13 +7,12 @@ import ViewEntry from '@/components/viewEntry';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
-export default function ViewPage(){
+
+export default function EditPage(){
 	const { isLoaded, userId, sessionId, getToken } = useAuth();
 	const [data, setData] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [canEdit, setCanEdit] = useState(false);
 	const router = useRouter()
-
 	const { id } = router.query
 	useEffect(() => {
 		if (router.isReady){
@@ -27,9 +26,6 @@ export default function ViewPage(){
 			const data = await response.json()
 			// update state -- configured earlier.
 			console.log(data)
-			if (userId === data['userId']){
-				setCanEdit(true)
-			}
 			setData(data)
 			setLoading(false)
 			}
@@ -49,11 +45,10 @@ export default function ViewPage(){
 	} else {
 		return(<>
 			<Header title={"Bevary"}/>
-			<ViewEntry data={data} canEdit={canEdit}/>
+			<div>{data['_id']}</div>
 			<div class="spacing"></div>
 			<NavBar/>
 		</>)
 
 	}
 }
-
