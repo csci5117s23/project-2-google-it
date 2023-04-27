@@ -1,10 +1,19 @@
-import {React, useState} from 'react'
+import { React } from 'react'
 import 'bulma/css/bulma.min.css';
-// import { useAuth } from '@clerk/nextjs';
+import { useRouter } from 'next/router'
 
-export default function ListItem({info}) {
+export default function LocationItem({info}) {
+  const router = useRouter()
+
+  function sendToLocation(){
+    router.push({
+      pathname:"/list/location",
+      query: {data: JSON.stringify(info["entries"])}
+    })
+  }
+
   return (
-    <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}}>
+    <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}} onClick={sendToLocation}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 
@@ -13,13 +22,13 @@ export default function ListItem({info}) {
           </div>
           <div class="media-content" style={{overflow: "hidden"}}>
             <p class="title is-size-6-desktop is-size-7-touch">
-              {info["bevName"]}<br></br>
-              {info["rating"].toFixed(1)} / 5.0<br></br>
-              </p>
-              <p class="subtitle is-size-6-desktop  is-size-7-touch">
-                {info["locName"]}<br></br>
-                {new Intl.DateTimeFormat('en-US').format(new Date(info["createdOn"]))}<br></br>
-              </p>
+              {info["locName"]}<br></br>
+              {info["avgRating"].toFixed(1)} / 5.0<br></br>
+            </p>
+            <p class="subtitle is-size-6-desktop  is-size-7-touch">
+              Last Rated: {new Intl.DateTimeFormat('en-US').format(new Date(info["lastEntry"]))}<br></br>
+              # of Ratings: {info["entries"].length}
+            </p>
           </div>
         </div>
       </div>
