@@ -75,7 +75,7 @@ export default function MyComponent() {
 				// Fetch public entries
 				// NEEDS AUTH
 				// Maybe need custom endpoint to retrieve public entries not owned by the user
-				const publicResponse = await fetch(API_ENDPOINT + "/bevEntry?private=false", {
+				const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
 					'method':'GET',
 					'headers': {'x-apikey': API_KEY}
 				})
