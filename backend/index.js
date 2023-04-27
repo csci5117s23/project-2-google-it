@@ -57,6 +57,25 @@ import jwtDecode from 'jwt-decode';
 //     next();
 // })
 
+app.get('/publicEntries', async (req, res) => {
+	// TODO: THIS NEEDS TO BE UPDATED ONCE AUTH DONE
+	// const userId = req.user_token.sub
+	const userId = "user_2Oq1CGG1CKCOgP3yxgJsfrpiMax";
+	// let's check access rights for the document being read/updated/replaced/deleted
+	const conn = await Datastore.open();
+	try {
+		const options = {
+			filter:{"private": false, "userID":{$not: userId}},
+			hints:{userId: 0}
+		}
+		conn.getMany('bevEntry', options).json(res);
+	} catch (e) {
+			// the document doesn't exist.
+			res.status(404).end(e);
+			return;
+	}
+});
+
 const bevEntry = object({
     bevName: string().required(),
 	locName: string().required(),
