@@ -4,6 +4,7 @@ import "bulma/css/bulma.min.css";
 
 export default function ListItem({ info }) {
   const imgS3URL = info["imgURL"];
+  
   let imgURL = imgS3URL;
   return (
   <Link href={'/view/' + info['_id']}>

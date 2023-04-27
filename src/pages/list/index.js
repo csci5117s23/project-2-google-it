@@ -2,10 +2,8 @@
 import NavBar from "@/components/nav";
 import React, { useEffect, useState } from "react";
 import LocationList from "@/components/locationList";
-import React, {useEffect, useState} from 'react'
 import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
-import NavBar from '@/components/nav';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 export default function List() {
