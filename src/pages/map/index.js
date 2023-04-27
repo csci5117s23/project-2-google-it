@@ -74,7 +74,6 @@ export default function MyComponent() {
 
 				// Fetch public entries
 				// NEEDS AUTH
-				// Maybe need custom endpoint to retrieve public entries not owned by the user
 				const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
 					'method':'GET',
 					'headers': {'x-apikey': API_KEY}
@@ -97,7 +96,6 @@ export default function MyComponent() {
 				});
 				setPublicMap(publicMap);
 				setLoading(false);
-				console.log(publicMap);  
 			}
 		}
 
@@ -125,6 +123,7 @@ export default function MyComponent() {
 		options = {
 			{
 				gestureHandling: "greedy",
+				disableDefaultUI:true,
 				styles: [
 					{
 					  "featureType": "administrative",
@@ -161,33 +160,13 @@ export default function MyComponent() {
 					  ]
 					}
 				  ]
-				// styles:[
-				// 	{
-				// 	  featureType: "all",
-				// 	  elementType: "labels.text",
-				// 	  stylers: [
-				// 		{
-				// 		  visibility: "off"
-				// 		}
-				// 	  ]
-				// 	},
-				// 	{
-				// 	  featureType: "poi",
-				// 	  elementType: "labels.icon",
-				// 	  stylers: [
-				// 		{
-				// 		  visibility: "off"
-				// 		}
-				// 	  ]
-				// 	}
-				//   ]
 			}
 		}
 	  >
 		{
-			[...displayMap].map(entry=> {
+			[...displayMap].map(location=> {
 				return (
-					<MapInfoWindow info={entry[1]} setOpen={setOpenInfoBox} idx={entry[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
+					<MapInfoWindow info={location[1]} setOpen={setOpenInfoBox} idx={location[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
 				)
 			})
 		}
@@ -225,10 +204,10 @@ export default function MyComponent() {
 			<>
 				<Header title={"Bevary"} />
 				<div style={{height: "100vh"}}>
-					<div style={{textAlign:"center"}}>
-						<label>
-							<input type="checkbox" style={{margin:"3px"}} checked={checked} onClick={checkBox}/>
-							See nearby entries
+					<div style={{position:"absolute", left:"5%", right:"5%", top:"11%", textAlign:"center", zIndex:7, fontSize:"2vh"}}>
+						<label style={{background:"white", padding:"1vh", borderRadius:"5px", border:"1px solid black", color:"black"}}>
+							<input type="checkbox" style={{margin:"4px", marginRight:"6px"}} checked={checked} onClick={checkBox}/>
+							See nearby Bevary entries
 						</label>
 					</div>
 					<NavBar />
