@@ -13,7 +13,7 @@ export default function ViewPage(){
 	const [loading, setLoading] = useState(true);
 	const [canEdit, setCanEdit] = useState(false);
 	const router = useRouter()
-
+	
 	const { id } = router.query
 	useEffect(() => {
 		if (router.isReady){
@@ -27,9 +27,10 @@ export default function ViewPage(){
 			const data = await response.json()
 			// update state -- configured earlier.
 			console.log(data)
-			if (userId === data['userId']){
+			console.log("USERID COMP" , userId, data['userID'])
+			if (userId === data['userID']){
 				setCanEdit(true)
-			}
+		   	}
 			setData(data)
 			setLoading(false)
 			}
@@ -38,7 +39,7 @@ export default function ViewPage(){
 			
 		}
 		
-	}, [router.isReady])
+	}, [router.isReady, isLoaded])
 	if (loading) {
 		return(<>
 			<Header title={"Bevary"}/>
