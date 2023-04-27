@@ -54,10 +54,10 @@ export default function List() {
   return (
     <>
       <Header title={"Bevary"} />
-      <div className="fadeIn">
-        <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
-      </div>
-      <div class="spacing"></div>
+        <div className="fadeIn">
+          <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
+        </div>
+        <div class="spacing"></div>
       <NavBar></NavBar>
     </>
   );

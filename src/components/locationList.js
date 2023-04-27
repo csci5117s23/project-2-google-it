@@ -53,7 +53,6 @@ export default function LocationList({ locations  }) {
     }
   }
   return <>
-  <button></button>
   {columns.map((column) => column)}
   </>;
 }
