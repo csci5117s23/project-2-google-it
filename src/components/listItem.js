@@ -60,23 +60,11 @@ export default function ListItem({ info }) {
               {info["bevName"]}
               <br></br>
               {info["rating"].toFixed(1)} / 5.0<br></br>
-<<<<<<< HEAD
               </p>
               <p class="subtitle is-size-6-desktop  is-size-7-touch">
                 {info["locName"]}<br></br>
                 {new Intl.DateTimeFormat('en-US').format(new Date(info["createdOn"]))}<br></br>
               </p>
-=======
-            </p>
-            <p class="subtitle is-size-6-desktop  is-size-7-touch">
-              {info["locName"]}
-              <br></br>
-              {new Intl.DateTimeFormat("en-US").format(
-                new Date(info["createdOn"])
-              )}
-              <br></br>
-            </p>
->>>>>>> dev
           </div>
         </div>
       </div>
