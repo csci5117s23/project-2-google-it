@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
 import ReactStars from "react-rating-stars-component";
+import { LoadScriptNext } from "@react-google-maps/api";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -25,22 +26,22 @@ export default function AddBevForm() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
-    if (bevLoc) {
-      bevLoc.addEventListener("keyup", function () {
-        var input = document.getElementById("bevLocation");
-        var autocomplete = new google.maps.places.Autocomplete(input);
-        autocomplete.addListener("place_changed", () => {
-          const place = autocomplete.getPlace();
-          console.log(place.geometry);
-          if (place.geometry) {
-            setBevPos(place.geometry.location.toJSON());
-            console.log(place.geometry.location.toJSON());
-          } else {
-            // alert("Not a valid location chosen")
-          }
-        });
-      });
-    }
+	if (bevLoc) {
+		bevLoc.addEventListener("keyup", function () {
+			var input = document.getElementById("bevLocation");
+			var autocomplete = new google.maps.places.Autocomplete(input);
+			autocomplete.addListener("place_changed", () => {
+			const place = autocomplete.getPlace();
+			console.log(place.geometry);
+			if (place.geometry) {
+				setBevPos(place.geometry.location.toJSON());
+				console.log(place.geometry.location.toJSON());
+			} else {
+				// alert("Not a valid location chosen")
+			}
+			});
+		});
+	}
   });
 
   const toggleState = (state) => {
@@ -218,14 +219,10 @@ export default function AddBevForm() {
   if (loading) {
     return <div>Loading!</div>;
   } else {
-    const placeScript =
-      "https://maps.googleapis.com/maps/api/js?key=" +
-      GOOGLE_API_KEY +
-      "&libraries=places";
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-        <script src={placeScript} async defer></script>
+		<LoadScriptNext googleMapsApiKey={GOOGLE_API_KEY} libraries={["places"]} />
         <div class="section">
           <div class="container">
             <form>
