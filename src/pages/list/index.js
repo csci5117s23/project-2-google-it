@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react'
 import BeverageList from '@/components/beveragelist'
 import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
+import NavBar from '@/components/nav';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 

@@ -16,8 +16,8 @@ const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
 export default function MyComponent() {
 	const { isLoaded, userId, sessionId, getToken } = useAuth();
 	const [currentLocation, setCurrentLocation] = useState({
-		lat: -3.745,
-		lng: -38.523
+		lat: 44.9745,
+		lng: -93.2322
 	})
 	const [loading, setLoading] = useState(true)
 	const [markerData, setMarkerData] = useState(null)
@@ -114,7 +114,7 @@ export default function MyComponent() {
 			<Header title={"Bevary"} />
 			<div style={{height: "100vh"}}>
 			<NavBar />
-			{isLoaded ? renderMap() : <div>Google Maps is unavailable at the moment</div>}
+			{renderMap()}
 			</div>
 			</>
 		  )
