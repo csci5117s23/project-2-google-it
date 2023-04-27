@@ -58,7 +58,7 @@ export default function List() {
       <div className="fadeIn">
         <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList>
       </div>
-      <div class="spacing"></div>
+      <div class="spacing mb-6"></div>
       <NavBar></NavBar>
     </>
   );
