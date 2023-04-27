@@ -31,15 +31,13 @@ export default function AddBevForm() {
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-		  console.log(place.geometry)
-		  if (place.geometry){
-			setBevPos(place.geometry.location.toJSON());
-          	console.log(place.geometry.location.toJSON());
-		  }
-		  else{
-			// alert("Not a valid location chosen")
-		  }
-          
+          console.log(place.geometry);
+          if (place.geometry) {
+            setBevPos(place.geometry.location.toJSON());
+            console.log(place.geometry.location.toJSON());
+          } else {
+            // alert("Not a valid location chosen")
+          }
         });
       });
     }
@@ -135,14 +133,16 @@ export default function AddBevForm() {
     var imgLocation = "bevary/" + userId + "/";
     if (bevName === "") {
       alert("A drink name is required to save an entry");
-	  setLoading(false);
+      setLoading(false);
       return;
     }
-	if (bevLocation === "" || bevPos === null) {
-		alert("A location is required to save an entry. A location must be chosen through the address recommendations or the current location button");
-		setLoading(false);
-		return;
-	}
+    if (bevLocation === "" || bevPos === null) {
+      alert(
+        "A location is required to save an entry. A location must be chosen through the address recommendations or the current location button"
+      );
+      setLoading(false);
+      return;
+    }
     const uploadData = {
       bevName: bevName,
       locName: bevLocation,
@@ -229,10 +229,14 @@ export default function AddBevForm() {
         <div class="section">
           <div class="container">
             <form>
-              <div class="columns is-gapless">
+              <div class="columns">
                 <div class="column">
                   <div class="is-hidden" id="photoPreviewDiv">
-                    <img class="image is-128x128" id="imgPreview" />
+                    <img
+                      style={{ margin: "0 auto" }}
+                      class="image is-128x128"
+                      id="imgPreview"
+                    />
                     <button
                       type="button"
                       class="button is-large is-danger is-fullwidth"
@@ -250,16 +254,18 @@ export default function AddBevForm() {
                         name="bevPhoto"
                         onChange={handlePhotoUpload}
                       />
-                      <span class="file-cta">
-                        <span class="icon is-large">
-                          <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
+                      <div className="slideTopFadeIn">
+                        <span class="file-cta">
+                          <span class="icon is-large">
+                            <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
+                          </span>
+                          <span class="file-label">Upload a picture!</span>
                         </span>
-                        <span class="file-label">Upload a picture!</span>
-                      </span>
+                      </div>
                     </label>
                   </div>
                 </div>
-                <div class="column">
+                <div class="column" className="fadeIn">
                   <div class="field">
                     <label class="label">
                       Should this post be private or public?
@@ -327,20 +333,22 @@ export default function AddBevForm() {
                   </div>
                 </div>
               </div>
-
-              
             </form>
-			<div class="field">
-                <div class="control">
-                  <button
-                    type="submit"
-                    onClick={handleSubmit}
-                    class="button is-success"
-                  >
-                    Save Entry!
-                  </button>
+            <div className="fadeIn">
+              <div class="column">
+                <div class="field">
+                  <div class="control">
+                    <button
+                      type="submit"
+                      onClick={handleSubmit}
+                      class="button is-success"
+                    >
+                      Save Entry!
+                    </button>
+                  </div>
                 </div>
               </div>
+            </div>
           </div>
         </div>
       </>
