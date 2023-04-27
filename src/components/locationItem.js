@@ -13,7 +13,7 @@ export default function LocationItem({info}) {
   }
 
   return (
-    <div class="card" style={{background:"#39AFEA", borderRadius:"1em", marginTop:"3px"}} onClick={sendToLocation}>
+    <div class="card" style={{background:"#88CFF2", borderRadius:"1em", marginTop:"3px"}} onClick={sendToLocation}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 

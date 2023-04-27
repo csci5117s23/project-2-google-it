@@ -1,19 +1,26 @@
 import { React } from "react";
 import "bulma/css/bulma.min.css";
 import LocationItem from "./locationItem";
+import BeverageItem from "./listItem";
 
 export default function LocationList({ locations  }) {
   var columns = [];
 
   function processLocation(locationEntries){
-    const ratings = locationEntries.map(entry => entry["rating"]);
-    const avgRating = ratings.reduce((accum, cur) => accum + cur) / ratings.length;
-    const locName = locationEntries[0]["locName"];
-    return {
-      avgRating: avgRating,
-      locName: locName,
-      entries: locationEntries,
-      lastEntry: locationEntries[locationEntries.length - 1]["createdOn"]
+    if(locationEntries.length == 1){
+      return <BeverageItem info={locationEntries[0]} personal={true}/>
+    }
+    else {
+      const ratings = locationEntries.map(entry => entry["rating"]);
+      const avgRating = ratings.reduce((accum, cur) => accum + cur) / ratings.length;
+      const locName = locationEntries[0]["locName"];
+      const data = {
+        avgRating: avgRating,
+        locName: locName,
+        entries: locationEntries,
+        lastEntry: locationEntries[locationEntries.length - 1]["createdOn"]
+      }
+      return <LocationItem info={data}></LocationItem>
     }
   }
 
@@ -26,7 +33,7 @@ export default function LocationList({ locations  }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <LocationItem info={processLocation(locations[i])}></LocationItem>
+              {processLocation(locations[i])}
             </div>
             <div class="column"></div>
           </div>
@@ -41,10 +48,10 @@ export default function LocationList({ locations  }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <LocationItem info={processLocation(locations[i])}></LocationItem>
+              {processLocation(locations[i])}
             </div>
             <div class="column">
-              <LocationItem info={processLocation(locations[i + 1])}></LocationItem>
+              {processLocation(locations[i + 1])}
             </div>
           </div>
         </>

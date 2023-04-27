@@ -2,13 +2,13 @@ import Link from 'next/link';
 import { React, useState } from "react";
 import "bulma/css/bulma.min.css";
 
-export default function ListItem({ info }) {
+export default function ListItem({ info, personal }) {
   const imgS3URL = info["imgURL"];
   
   let imgURL = imgS3URL;
   return (
   <Link href={'/view/' + info['_id']}>
-    <div class="card" style={{background:((info["personal"] && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",}}>
+    <div class="card" style={{background:((personal && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 

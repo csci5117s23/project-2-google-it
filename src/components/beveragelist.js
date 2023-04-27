@@ -14,7 +14,7 @@ export default function BeverageList({ listItems, deleteEntry }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <ListItem info={listItems[i]}></ListItem>
+              <ListItem info={listItems[i]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i]}
                 deleteEntry={deleteEntry}
@@ -33,14 +33,14 @@ export default function BeverageList({ listItems, deleteEntry }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <ListItem info={listItems[i]}></ListItem>
+              <ListItem info={listItems[i]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i]}
                 deleteEntry={deleteEntry}
               />
             </div>
             <div class="column">
-              <ListItem info={listItems[i + 1]}></ListItem>
+              <ListItem info={listItems[i + 1]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i + 1]}
                 deleteEntry={deleteEntry}
