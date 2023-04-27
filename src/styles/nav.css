@@ -1,0 +1,80 @@
+.bottom{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 12%;
+    background-color: rgb(97, 94, 255);
+    border-radius: 10px 10px 0px 0px;
+    z-index: 10;
+}
+.spacing{
+    height: 100px;
+    background-color: white;
+}
+.nav{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.elevate{
+    position: relative;
+    top: -50px;
+    background-color: rgba(97, 94, 255, 0);
+    
+}
+.sidebutton{
+    padding-top: 10px;
+    padding-bottom: 20px;
+    padding-left: 10%;
+    padding-right: 10%;
+    background-color: white;
+    border-radius: 5px;
+}
+.plus{
+    width: 100px;
+    height: 100px;
+    
+}
+.sideImg{
+    width: 45px;
+    height: 40px;
+}
+.stack{
+    display: flex;
+    flex-direction: column;
+}
+p{
+    text-align: center;
+}
+.journ{
+    margin-left: 3px;
+}
+
+.header{
+    display: flex;
+    background-color: rgb(97, 94, 255);
+    justify-content: space-between;
+}
+.sideHeader{
+    width: 20%;
+    text-align: "center";
+}
+.logoutButton{
+    border-radius: 5px;
+    background-color: white;
+    padding-top: 3px;
+    padding-bottom: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 90px;
+    font-size: 1.5vh;
+}
+
+.arrow{
+    height: 20px;
+    width: 20px;
+}
