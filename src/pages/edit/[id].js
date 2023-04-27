@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
 import NavBar from '@/components/nav';
 import ViewEntry from '@/components/viewEntry';
+import AddEditBevForm from '@/components/editBevForm';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
@@ -18,7 +19,6 @@ export default function EditPage(){
 		if (router.isReady){
 			const fetchData = async () => {
 				const token = await getToken({template: "BevaryTemplate"})
-				console.log("Inside of useEffect!", router.isReady)
 				const response = await fetch(API_ENDPOINT + "/bevEntry/" + id, {
 					'method':'GET',
 					'headers': {'Authorization': 'Bearer ' + token}
@@ -45,7 +45,8 @@ export default function EditPage(){
 	} else {
 		return(<>
 			<Header title={"Bevary"}/>
-			<div>{data['_id']}</div>
+			<AddEditBevForm data={data} />
+			{/* <div>{data['_id']}</div> */}
 			<div class="spacing"></div>
 			<NavBar/>
 		</>)

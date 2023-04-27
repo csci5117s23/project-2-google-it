@@ -42,7 +42,7 @@ export default function BeverageList({ listItems, deleteEntry }) {
             <div class="column">
               <ListItem info={listItems[i + 1]}></ListItem>
               <DeleteAndEditButtons
-                info={listItems[i]}
+                info={listItems[i + 1]}
                 deleteEntry={deleteEntry}
               />
             </div>
