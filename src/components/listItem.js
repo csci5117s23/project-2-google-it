@@ -1,9 +1,11 @@
 import {React, useState} from 'react'
 import 'bulma/css/bulma.min.css';
+import Link from 'next/link';
 // import { useAuth } from '@clerk/nextjs';
 
 export default function ListItem({info}) {
   return (
+	<Link href={'/view/' + info['_id']}>
     <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
@@ -24,5 +26,6 @@ export default function ListItem({info}) {
         </div>
       </div>
     </div>
+	</Link>
   )
 }

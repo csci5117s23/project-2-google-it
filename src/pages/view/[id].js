@@ -45,6 +45,7 @@ export default function ViewPage(){
 		return(<>
 			<Header title={"Bevary"}/>
 			<ViewEntry data={data}/>
+			<div class="spacing"></div>
 			<NavBar/>
 		</>)
 

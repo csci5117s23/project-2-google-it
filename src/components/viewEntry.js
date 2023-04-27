@@ -34,8 +34,9 @@ export default function ViewEntry({data}){
 				value={data['rating']}
 				edit={false}
 			/>
+			{data["desc"] !== "" ? <div>Description: {data["desc"]}</div> : <></>}
 			<div>
-				This beverage was acquired at {data['locName']} (Map provided below)
+				This beverage was acquired at {data['locName']} (Location below)
 			</div>
 			{<LoadScriptNext
 				googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}
@@ -54,9 +55,6 @@ export default function ViewEntry({data}){
     				</MarkerF>
 				</GoogleMap>
 			</LoadScriptNext>}
-			
-
-
 		</div>
 	</div>
 		
