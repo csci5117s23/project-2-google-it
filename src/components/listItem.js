@@ -4,7 +4,7 @@ import 'bulma/css/bulma.min.css';
 
 export default function ListItem({info}) {
   return (
-    <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}}>
+    <div class="card" style={{background:"#39AFEA", borderRadius:"1em"}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 

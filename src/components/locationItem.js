@@ -8,12 +8,12 @@ export default function LocationItem({info}) {
   function sendToLocation(){
     router.push({
       pathname:"/list/location",
-      query: {data: JSON.stringify(info["entries"])}
+      query: {data: JSON.stringify(info["entries"]), name:info["locName"]}
     })
   }
 
   return (
-    <div class="card" style={{background:"#39AFEA", borderRadius:"1em",}} onClick={sendToLocation}>
+    <div class="card" style={{background:"#39AFEA", borderRadius:"1em", marginTop:"3px"}} onClick={sendToLocation}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 
