@@ -16,32 +16,38 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: IDENTITY_POOL_ID,
 });
 
-export default function AddBevForm() {
-  const [bevPos, setBevPos] = useState(null);
-  const [toggleLabel, setToggleLabel] = useState("Private");
-  const [publicPost, setPublicPost] = useState(false);
-  const [ratingValue, setRatingValue] = useState(0);
+export default function AddEditBevForm({data}) {
+  const [bevPos, setBevPos] = useState({
+	lat: data['lat'],
+	lng: data['lng']
+  });
+  const [toggleLabel, setToggleLabel] = useState(data['private'] ? "Private" : "Public");
+  const [publicPost, setPublicPost] = useState(data['private'] ? false : true);
+  console.log(publicPost, data['private'])
+  console.log(toggleLabel, data['private'])
+  const [ratingValue, setRatingValue] = useState(data['rating']);
   const [loading, setLoading] = useState(false);
+  const [imgSrc, setImgSrc] = useState(data['imgURL'] ? data['imgURL'] : "")
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
-	if (bevLoc) {
-		bevLoc.addEventListener("keyup", function () {
-			var input = document.getElementById("bevLocation");
-			var autocomplete = new google.maps.places.Autocomplete(input);
-			autocomplete.addListener("place_changed", () => {
-			const place = autocomplete.getPlace();
-			console.log(place.geometry);
-			if (place.geometry) {
-				setBevPos(place.geometry.location.toJSON());
-				console.log(place.geometry.location.toJSON());
-			} else {
-				// alert("Not a valid location chosen")
-			}
-			});
-		});
-	}
+    if (bevLoc) {
+      bevLoc.addEventListener("keyup", function () {
+        var input = document.getElementById("bevLocation");
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place.geometry);
+          if (place.geometry) {
+            setBevPos(place.geometry.location.toJSON());
+            console.log(place.geometry.location.toJSON());
+          } else {
+            // alert("Not a valid location chosen")
+          }
+        });
+      });
+    }
   });
 
   const toggleState = (state) => {
@@ -107,7 +113,8 @@ export default function AddBevForm() {
     const img = document.getElementById("imgPreview");
     const imgDiv = document.getElementById("photoPreviewDiv");
     imgDiv.setAttribute("class", "");
-    img.setAttribute("src", URL.createObjectURL(fileInput.files[0]));
+	setImgSrc(URL.createObjectURL(fileInput.files[0]))
+    // img.setAttribute("src", URL.createObjectURL(fileInput.files[0]));
     img.onload = function () {
       URL.revokeObjectURL(img.src); // free memory
     };
@@ -121,6 +128,7 @@ export default function AddBevForm() {
     photoUploadDiv.setAttribute("class", "file is-large is-boxed");
     const fileInput = document.getElementsByClassName("file-input")[0];
     fileInput.value = "";
+	setImgSrc("")
   }
 
   const handleSubmit = async (event) => {
@@ -132,6 +140,7 @@ export default function AddBevForm() {
     const bevRating = ratingValue;
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
+	console.log("LAT LNG", bevPos["lat"], bevPos["lng"])
     if (bevName === "") {
       alert("A drink name is required to save an entry");
       setLoading(false);
@@ -148,16 +157,17 @@ export default function AddBevForm() {
       bevName: bevName,
       locName: bevLocation,
       rating: bevRating,
-      lat: bevPos["lat"].toFixed(4),
-      lng: bevPos["lng"].toFixed(4),
+      lat: parseFloat(parseFloat(bevPos["lat"]).toFixed(4)),
+      lng: parseFloat(parseFloat(bevPos["lng"]).toFixed(4)),
       desc: bevDescription,
       userID: userId,
       private: !publicPost,
+	  imgURL: imgSrc
     };
 
     const token = await getToken({ template: "BevaryTemplate" });
-    const backendResponse = await fetch(API_ENDPOINT + "/bevEntry", {
-      method: "POST",
+    const backendResponse = await fetch(API_ENDPOINT + "/bevEntry/" + data['_id'], {
+      method: "PATCH",
       headers: {
         Authorization: "Bearer " + token,
         "Content-Type": "application/json",
@@ -169,7 +179,8 @@ export default function AddBevForm() {
     if (img) {
       const bevID = backendData["_id"];
       // https://stackoverflow.com/questions/3486625/remove-illegal-url-characters-with-javascript
-      imgLocation += bevID + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
+	  const epoch = String(Date.now())
+      imgLocation += bevID + "/" + epoch + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
       console.log(imgLocation, img);
 
       var upload = new AWS.S3.ManagedUpload({
@@ -202,7 +213,7 @@ export default function AddBevForm() {
           );
           const updateImageData = await updateImageResponse.json();
           console.log(updateImageData);
-          router.push("/map");
+          router.push("/list");
         },
         function (err) {
           return alert(
@@ -212,7 +223,7 @@ export default function AddBevForm() {
         }
       );
     } else {
-      router.push("/map");
+      router.push("/list");
     }
   };
 
@@ -227,12 +238,52 @@ export default function AddBevForm() {
           <div class="container">
             <form>
               <div class="columns">
+				{data["imgURL"] && data["imgURL"] !== "" ?
+				<div class="column">
+				<div id="photoPreviewDiv">
+				  <img
+					style={{ margin: "0 auto" }}
+					class="image is-128x128"
+					id="imgPreview"
+					src={imgSrc}
+				  />
+				  <button
+					type="button"
+					class="button is-large is-danger is-fullwidth"
+					onClick={handleNewPhoto}
+				  >
+					Change Photo
+				  </button>
+				</div>
+				<div id="photoUpload" class="file is-large is-boxed is-hidden">
+				  <label class="file-label">
+					<input
+					  class="file-input"
+					  type="file"
+					  accept="image/*"
+					  name="bevPhoto"
+					  onChange={handlePhotoUpload}
+					/>
+					<div className="slideTopFadeIn">
+					  <span class="file-cta">
+						<span class="icon is-large">
+						  <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
+						</span>
+						<span class="file-label">Upload a picture!</span>
+					  </span>
+					</div>
+				  </label>
+				</div>
+			  </div>
+				
+				: 
                 <div class="column">
                   <div class="is-hidden" id="photoPreviewDiv">
                     <img
                       style={{ margin: "0 auto" }}
                       class="image is-128x128"
                       id="imgPreview"
+					  src={imgSrc}
                     />
                     <button
                       type="button"
@@ -262,6 +313,7 @@ export default function AddBevForm() {
                     </label>
                   </div>
                 </div>
+  				}
                 <div class="column" className="fadeIn">
                   <div class="field">
                     <label class="label">
@@ -270,7 +322,7 @@ export default function AddBevForm() {
                     <div class="control">
                       <Toggle
                         label={toggleLabel}
-                        toggled={false}
+                        toggled={publicPost}
                         onClick={toggleState}
                       />
                     </div>
@@ -283,6 +335,7 @@ export default function AddBevForm() {
                         type="text"
                         id="bevName"
                         placeholder="Text input"
+						defaultValue={data['bevName']}
                         required
                       />
                     </div>
@@ -295,6 +348,7 @@ export default function AddBevForm() {
                         class="input"
                         type="text"
                         placeholder="Text input"
+						defaultValue={data['locName']}
                         required
                       />
                       <button
@@ -314,6 +368,7 @@ export default function AddBevForm() {
                         isHalf={true}
                         onChange={ratingChanged}
                         size={24}
+						value={ratingValue}
                         activeColor="#ffd700"
                       />
                     </div>
@@ -325,6 +380,7 @@ export default function AddBevForm() {
                         class="textarea"
                         id="bevDescription"
                         placeholder="This beer sucked"
+						defaultValue={data['desc']}
                       ></textarea>
                     </div>
                   </div>

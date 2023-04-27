@@ -1,15 +1,13 @@
 // import { useAuth } from '@clerk/nextjs';
 import NavBar from "@/components/nav";
 import React, { useEffect, useState } from "react";
-import BeverageList from "@/components/beveragelist";
 import LocationList from "@/components/locationList";
+import React, {useEffect, useState} from 'react'
 import { useAuth } from "@clerk/nextjs";
-import Header from "@/components/header";
+import Header from '@/components/header';
+import NavBar from '@/components/nav';
 
-// TODO: REMOVE AFTER AUTH
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
-
 export default function List() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   const [data, setData] = useState([]);
@@ -87,10 +85,9 @@ export default function List() {
     <>
       <Header title={"Bevary"} />
       <div className="fadeIn">
-        {/* <BeverageList listItems={data} deleteEntry={deleteEntry}></BeverageList> */}
         <LocationList locations={locations}></LocationList>
       </div>
-      <div class="spacing"></div>
+      <div class="spacing mb-6"></div>
       <NavBar></NavBar>
     </>
   );
