@@ -6,11 +6,11 @@ export default function ListItem({ info }) {
   const imgS3URL = info["imgURL"];
   let imgURL = imgS3URL;
   return (
-  	<Link href={'/view/' + info['_id']}>
-    <div class="card" style={{ background: "#39AFEA", borderRadius: "1em" }}>
-      <div class="card-content" style={{ padding: "1.7vh" }}>
-        <div class="media" style={{ alignItems: "center" }}>
-          <div class="media-left">
+  <Link href={'/view/' + info['_id']}>
+    <div class="card" style={{background:((info["personal"] && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",}}>
+      <div class="card-content" style={{padding:"1.7vh"}}>
+        <div class="media" style={{alignItems: "center"}}>
+          <div class="media-left"> 
             {/* TODO: Replace icon with an actual picture and size it properly*/}
             {!imgS3URL && (
               <svg

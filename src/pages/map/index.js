@@ -19,9 +19,12 @@ export default function MyComponent() {
 		lat: 44.9745,
 		lng: -93.2322
 	})
-	const [loading, setLoading] = useState(true)
-	const [markerData, setMarkerData] = useState(null)
-	const [map, setMap] = useState(null)
+	const [loading, setLoading] = useState(true);
+	const [useMarkerData, setUserMarkerData] = useState(null);
+	const [userMap, setUserMap] = useState(null);
+	const [publicMap, setPublicMap] = useState(null);
+	const [displayMap, setDisplayMap] = useState(null);
+	const [checked, setChecked] = useState(false);
 	const [openInfoBox, setOpenInfoBox] = useState(-1);
 	const [userToken, setToken] = useState(null);
 	useEffect(() => {
@@ -40,32 +43,64 @@ export default function MyComponent() {
 		}
 		
 		const fetchData = async () => {
-			const token = await getToken({template: "BevaryTemplate"})
-			setToken(token)
-			console.log(API_ENDPOINT + "/bevEntry")
-			const response = await fetch(API_ENDPOINT + "/bevEntry", {
-				'method':'GET',
-				'headers': {'Authorization': 'Bearer ' + token}
-			})
-			const data = await response.json()
-			var locationMap = new Map();
-			data.map(entry => {
-				const lat = entry["lat"];
-				const lng = entry["lng"];
-				const key = lat + "," + lng
-				if(!locationMap.has(key)){
-					locationMap.set(key, [entry]);
-				}
-				else {
-					locationMap.set(key, locationMap.get(key).concat(entry));
-				}
-			});
-			setMap(locationMap);
-			setMarkerData(data)
-			setLoading(false)  
+			if(userId){
+				// Fetch user entries
+				const token = await getToken({template: "BevaryTemplate"})
+				setToken(token)
+				console.log(API_ENDPOINT + "/bevEntry")
+				// THIS NEEDS AUTH
+				const userResponse = await fetch(API_ENDPOINT + "/bevEntry?userID=" + userId, {
+					'method':'GET',
+					'headers': {'Authorization': 'Bearer ' + token}
+				})
+				const userData = await userResponse.json()
+				var userMap = new Map();
+				userData.map(entry => {
+					const lat = entry["lat"];
+					const lng = entry["lng"];
+					const key = lat + "," + lng;
+					entry["personal"] = true;
+					if(!userMap.has(key)){
+						userMap.set(key, [entry]);
+					}
+					else {
+						userMap.set(key, userMap.get(key).concat(entry));
+					}
+				});
+				setUserMap(userMap);
+				setDisplayMap(userMap);
+				setUserMarkerData(userData);
+				setLoading(false);	
+
+				// Fetch public entries
+				// NEEDS AUTH
+				const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
+					'method':'GET',
+					'headers': {'x-apikey': API_KEY}
+				})
+				const publicData = await publicResponse.json()
+				var publicMap = new Map(userMap);
+				const filteredData = publicData.filter(item => item["userID"] != userId)
+
+				filteredData.map(entry => {
+					const lat = entry["lat"];
+					const lng = entry["lng"];
+					const key = lat + "," + lng;
+					entry["personal"] = false;
+					if(!publicMap.has(key)){
+						publicMap.set(key, [entry]);
+					}
+					else {
+						publicMap.set(key, publicMap.get(key).concat(entry));
+					}
+				});
+				setPublicMap(publicMap);
+				setLoading(false);
+			}
 		}
+
 		fetchData();
-	}, []);
+	}, [userId]);
 
 	const { mapIsLoaded, loadError } = useJsApiLoader({
 		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY
@@ -87,19 +122,74 @@ export default function MyComponent() {
 		zoom={10}
 		options = {
 			{
-				gestureHandling: "greedy"
+				gestureHandling: "greedy",
+				disableDefaultUI:true,
+				styles: [
+					{
+					  "featureType": "administrative",
+					  "elementType": "geometry",
+					  "stylers": [
+						{
+						  "visibility": "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "poi",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "road",
+					  elementType: "labels.icon",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					},
+					{
+					  featureType: "transit",
+					  stylers: [
+						{
+						  visibility: "off"
+						}
+					  ]
+					}
+				  ]
 			}
 		}
 	  >
 		{
-			[...map].map(entry=> {
+			[...displayMap].map(location=> {
 				return (
-					<MapInfoWindow info={entry[1]} setOpen={setOpenInfoBox} idx={entry[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
+					<MapInfoWindow info={location[1]} setOpen={setOpenInfoBox} idx={location[1][0]["_id"]} curOpen={openInfoBox}></MapInfoWindow>
 				)
 			})
 		}
 		</GoogleMap>
+
 	}
+
+	function checkBox(){
+		if(checked){
+			setDisplayMap(userMap);
+		}
+		else {
+			setDisplayMap(publicMap);
+		}
+		setChecked(!checked);
+	}
+
+	const onMarkerLoad = (marker) => {
+		console.log("marker: ", marker);
+	};
+	const onInfoLoad = infoWindow => {
+		console.log('infoWindow: ', infoWindow)
+	  }
 
 	if(loading){
 		
@@ -110,14 +200,21 @@ export default function MyComponent() {
 		)
 	
 	} else{
-		return (<>
-			<Header title={"Bevary"} />
-			<div style={{height: "100vh"}}>
-			<NavBar />
-			{renderMap()}
-			</div>
+		return (
+			<>
+				<Header title={"Bevary"} />
+				<div style={{height: "100vh"}}>
+					<div style={{position:"absolute", left:"5%", right:"5%", top:"11%", textAlign:"center", zIndex:7, fontSize:"2vh"}}>
+						<label style={{background:"white", padding:"1vh", borderRadius:"5px", border:"1px solid black", color:"black"}}>
+							<input type="checkbox" style={{margin:"4px", marginRight:"6px"}} checked={checked} onClick={checkBox}/>
+							See nearby Bevary entries
+						</label>
+					</div>
+					<NavBar />
+					{renderMap()}
+				</div>
 			</>
-		  )
+		)
 	}
   
 }
