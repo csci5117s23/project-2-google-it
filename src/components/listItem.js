@@ -1,12 +1,12 @@
+import Link from 'next/link';
 import { React, useState } from "react";
 import "bulma/css/bulma.min.css";
-import Image from "next/image";
-// import { useAuth } from '@clerk/nextjs';
 
 export default function ListItem({ info }) {
   const imgS3URL = info["imgURL"];
   let imgURL = imgS3URL;
   return (
+  <Link href={'/view/' + info['_id']}>
     <div class="card" style={{background:((info["personal"] && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
@@ -73,5 +73,6 @@ export default function ListItem({ info }) {
         </div>
       </div>
     </div>
-  );
+	</Link>
+  )
 }

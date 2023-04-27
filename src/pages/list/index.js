@@ -1,14 +1,10 @@
-// import { useAuth } from '@clerk/nextjs';
-import NavBar from "@/components/nav";
-import React, { useEffect, useState } from "react";
-import BeverageList from "@/components/beveragelist";
+import React, {useEffect, useState} from 'react'
+import BeverageList from '@/components/beveragelist'
 import { useAuth } from "@clerk/nextjs";
-import Header from "@/components/header";
+import Header from '@/components/header';
+import NavBar from '@/components/nav';
 
-// TODO: REMOVE AFTER AUTH
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
-
 export default function List() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   const [data, setData] = useState([]);
