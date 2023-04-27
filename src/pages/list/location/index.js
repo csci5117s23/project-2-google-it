@@ -48,8 +48,7 @@ export default function Location() {
 
   useEffect(() => {
     if(router.isReady){
-      console.log(router.query);
-      setData(router.query.data);
+      setData(JSON.parse(router.query.data));
       setName(router.query.name);
     }
   }, []);

@@ -11,35 +11,6 @@ export default function List() {
   const [data, setData] = useState([]);
   const [locations, setLocations] = useState([])
 
-  const deleteEntry = async (info) => {
-    var id = info["_id"];
-    if (
-      confirm(
-        "Are you sure you want to delete this Bev Entry? This action cannot be undone"
-      )
-    ) {
-      const token = await getToken({ template: "BevaryTemplate" });
-      await fetch(API_ENDPOINT + "/bevEntry/" + id, {
-        method: "DELETE",
-        headers: { Authorization: "Bearer " + token },
-      })
-        .then((response) => {
-          return response.json();
-        })
-        .then((responseData) => {
-          var newData = [...data];
-          var index = -1;
-          for (var i = 0; i < newData.length; i++) {
-            if (newData[i]["_id"] === id) {
-              index = i;
-            }
-          }
-          newData.splice(index, 1);
-          setData(newData);
-        });
-    }
-  };
-
   useEffect(() => {
     // const fetchData = async () => {
     //   const token = await getToken({ template: "BevaryTemplate" });

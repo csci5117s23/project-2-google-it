@@ -4,7 +4,6 @@ import "bulma/css/bulma.min.css";
 import DeleteAndEditButtons from "./deleteAndEditButtons";
 export default function BeverageList({ listItems, deleteEntry }) {
   var columns = [];
-
   for (let i = 0; i < listItems.length; i += 2) {
     if (i == listItems.length - 1) {
       const col = (
