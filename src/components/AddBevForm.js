@@ -21,6 +21,7 @@ export default function AddBevForm() {
   const [toggleLabel, setToggleLabel] = useState("Private");
   const [publicPost, setPublicPost] = useState(false);
   const [ratingValue, setRatingValue] = useState(0);
+  const [gatheringLocation, setGatheringLocation] = useState(false)
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
@@ -28,6 +29,7 @@ export default function AddBevForm() {
     const bevLoc = document.getElementById("bevLocation");
 	if (bevLoc) {
 		bevLoc.addEventListener("keyup", function () {
+			setGatheringLocation(false);
 			var input = document.getElementById("bevLocation");
 			var autocomplete = new google.maps.places.Autocomplete(input);
 			autocomplete.addListener("place_changed", () => {
@@ -60,6 +62,7 @@ export default function AddBevForm() {
   const getCurrentLocation = async () => {
     if ("geolocation" in navigator) {
       var input = document.getElementById("bevLocation");
+	  setGatheringLocation(true);
       console.log("Available");
       input.value = "Getting Current Location Address";
       var lat = 0;
@@ -95,6 +98,7 @@ export default function AddBevForm() {
         const data = await response.json();
         console.log(data);
         input.value = data.results[0].formatted_address;
+		setGatheringLocation(false);
       });
     } else {
       alert("Using Current Location is not available");
@@ -335,6 +339,16 @@ export default function AddBevForm() {
               <div class="column">
                 <div class="field">
                   <div class="control">
+					{gatheringLocation ? 
+					<button
+					type="submit"
+					onClick={handleSubmit}
+					class="button is-success"
+					disabled={true}
+				  >
+					Attempting to access current location...
+				  </button>
+					:
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -342,6 +356,7 @@ export default function AddBevForm() {
                     >
                       Save Entry!
                     </button>
+  					}
                   </div>
                 </div>
               </div>
