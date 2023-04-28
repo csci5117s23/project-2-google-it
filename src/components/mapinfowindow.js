@@ -41,7 +41,7 @@ export default function MapInfoWindow({info, setOpen, idx, curOpen}){
                 info.map(entry => {
                   return (
                     <div style={{margin:"0.3vh"}}>
-                      <BevaryItem info={entry}></BevaryItem>
+                      <BevaryItem info={entry} personal={entry["personal"]}></BevaryItem>
                     </div>
                 )
                 })

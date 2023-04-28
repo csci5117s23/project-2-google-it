@@ -4,7 +4,6 @@ import "bulma/css/bulma.min.css";
 import DeleteAndEditButtons from "./deleteAndEditButtons";
 export default function BeverageList({ listItems, deleteEntry }) {
   var columns = [];
-
   for (let i = 0; i < listItems.length; i += 2) {
     if (i == listItems.length - 1) {
       const col = (
@@ -14,7 +13,7 @@ export default function BeverageList({ listItems, deleteEntry }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <ListItem info={listItems[i]}></ListItem>
+              <ListItem info={listItems[i]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i]}
                 deleteEntry={deleteEntry}
@@ -33,14 +32,14 @@ export default function BeverageList({ listItems, deleteEntry }) {
             style={{ marginLeft: "0", marginRight: "0" }}
           >
             <div class="column">
-              <ListItem info={listItems[i]}></ListItem>
+              <ListItem info={listItems[i]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i]}
                 deleteEntry={deleteEntry}
               />
             </div>
             <div class="column">
-              <ListItem info={listItems[i + 1]}></ListItem>
+              <ListItem info={listItems[i + 1]} personal={true}></ListItem>
               <DeleteAndEditButtons
                 info={listItems[i + 1]}
                 deleteEntry={deleteEntry}
