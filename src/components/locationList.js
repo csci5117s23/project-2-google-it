@@ -7,21 +7,16 @@ export default function LocationList({ locations  }) {
   var columns = [];
 
   function processLocation(locationEntries){
-    if(locationEntries.length == 1){
-      return <BeverageItem info={locationEntries[0]} personal={true}/>
+    const ratings = locationEntries.map(entry => entry["rating"]);
+    const avgRating = ratings.reduce((accum, cur) => accum + cur) / ratings.length;
+    const locName = locationEntries[0]["locName"];
+    const data = {
+      avgRating: avgRating,
+      locName: locName,
+      entries: locationEntries,
+      lastEntry: locationEntries[locationEntries.length - 1]["createdOn"]
     }
-    else {
-      const ratings = locationEntries.map(entry => entry["rating"]);
-      const avgRating = ratings.reduce((accum, cur) => accum + cur) / ratings.length;
-      const locName = locationEntries[0]["locName"];
-      const data = {
-        avgRating: avgRating,
-        locName: locName,
-        entries: locationEntries,
-        lastEntry: locationEntries[locationEntries.length - 1]["createdOn"]
-      }
-      return <LocationItem info={data}></LocationItem>
-    }
+    return <LocationItem info={data}></LocationItem>
   }
 
   for (let i = 0; i < locations.length; i += 2) {
