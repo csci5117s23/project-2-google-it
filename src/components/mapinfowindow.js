@@ -37,10 +37,23 @@ export default function MapInfoWindow({info, setOpen, idx, curOpen}){
         <InfoWindow position={{ lat: lat, lng: long}} onCloseClick={handleToggleClose}>
           <>
             <div style={{maxHeight:"30vh"}}>
+              <div 
+              style={{
+                textAlign:"center",
+                backgroundColor:"white",
+                border:"3px solid #615EFF", 
+                borderRadius:"5px",
+                fontWeight: "bold",
+                padding: "3px 2px",
+                boxShadow: "0px 4px 4px #b5b5b5",
+                }}
+              >
+                {info[0]["locName"]}
+              </div>
               {
                 info.map(entry => {
                   return (
-                    <div style={{margin:"0.3vh"}}>
+                    <div style={{margin:"0.3vh", marginTop:"1vh"}}>
                       <BevaryItem info={entry} personal={entry["personal"]}></BevaryItem>
                     </div>
                 )

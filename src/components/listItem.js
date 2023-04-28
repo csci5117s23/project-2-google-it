@@ -7,7 +7,7 @@ export default function ListItem({ info, personal }) {
   let imgURL = imgS3URL;
   return (
   <Link href={'/view/' + info['_id']}>
-    <div class="card" style={{background:((personal && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",}}>
+    <div class="card" style={{background:((personal && "#88CFF2") || ("#D89AF5")), borderRadius:"1em", boxShadow: "0px 3px 4px #b5b5b5", border:"2.5px solid #615EFF",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 
