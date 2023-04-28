@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
 import NavBar from '@/components/nav';
 import ViewEntry from '@/components/viewEntry';
+import Loading from '@/components/loading';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
@@ -40,10 +41,10 @@ export default function ViewPage(){
 		}
 		
 	}, [router.isReady, isLoaded])
-	if (loading) {
+	if (true) {
 		return(<>
 			<Header title={"Bevary"}/>
-			<div>Loading!</div>
+			<Loading />
 			<NavBar/>
 		</>)
 

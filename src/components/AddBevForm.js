@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
 import ReactStars from "react-rating-stars-component";
 import { LoadScriptNext } from "@react-google-maps/api";
+import Loading from "./loading";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -217,7 +218,7 @@ export default function AddBevForm() {
   };
 
   if (loading) {
-    return <div>Loading!</div>;
+    return <Loading />;
   } else {
     return (
       <>

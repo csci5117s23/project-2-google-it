@@ -5,6 +5,7 @@ import Header from '@/components/header';
 import NavBar from '@/components/nav';
 import ViewEntry from '@/components/viewEntry';
 import AddEditBevForm from '@/components/editBevForm';
+import Loading from '@/components/loading';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 
@@ -38,7 +39,7 @@ export default function EditPage(){
 	if (loading) {
 		return(<>
 			<Header title={"Bevary"}/>
-			<div>Loading!</div>
+			<Loading />
 			<NavBar/>
 		</>)
 

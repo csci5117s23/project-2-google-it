@@ -4,6 +4,7 @@ import NavBar from '@/components/nav';
 import MapInfoWindow from '@/components/mapinfowindow';
 import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
+import Loading from '@/components/loading';
 //Clerk stuff commented out for now
 
 const containerStyle = {
@@ -195,7 +196,7 @@ export default function MyComponent() {
 		
 		return (<>
 			<Header title={"Bevary"} />
-			<div>Loading...</div>
+			<Loading />
 		</>	
 		)
 	
