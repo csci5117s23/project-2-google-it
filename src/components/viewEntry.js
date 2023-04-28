@@ -23,10 +23,13 @@ export default function ViewEntry({data, canEdit}){
 
 	return(<>
 	<div class="columns">
-		<div class="column" style={{marginLeft: 'auto', marginRight: 'auto', textAlign: 'center'}}>
+		<div class="column" style={{marginLeft: 'auto', marginRight: 'auto', textAlign: 'center', display:"flex", flexDirection:"column", alignItems:"center"}}>
+			<div>
+				{canEdit ? <EditBevButton info={data}/> : <></>}
+			</div>
 			<h1>{data['bevName']}</h1>
 			<h3>{date.toDateString()}</h3>
-			{data['imgURL'] ? <img style={{height: '200px'}} src={data['imgURL']}/> : <></>}
+			{data['imgURL'] ? <img style={{height: '200px', width: '200px'}} src={data['imgURL']}/> : <></>}
 			<ReactStars
 				count={5}
 				isHalf={true}
@@ -35,7 +38,7 @@ export default function ViewEntry({data, canEdit}){
 				value={data['rating']}
 				edit={false}
 			/>
-			{data["desc"] !== "" ? <div>Description: {data["desc"]}</div> : <></>}
+			{data["desc"] !== "" ? <div style={{whiteSpace:"pre-line"}}>Description: {data["desc"]}</div> : <></>}
 			<div>
 				This beverage was acquired at {data['locName']} (Location below)
 			</div>
@@ -57,10 +60,6 @@ export default function ViewEntry({data, canEdit}){
 				</GoogleMap>
 			</LoadScriptNext>}
 		</div>
-		<div>
-			{canEdit ? <EditBevButton info={data}/> : <></>}
-		</div>
-		
 	</div>
 		
 	</>)
