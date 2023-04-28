@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { React, useState } from "react";
 import "bulma/css/bulma.min.css";
 
-export default function ListItem({ info }) {
+export default function ListItem({ info, desc }) {
   const imgS3URL = info["imgURL"];
   let imgURL = imgS3URL;
   return (
@@ -62,6 +62,9 @@ export default function ListItem({ info }) {
               {info["rating"].toFixed(1)} / 5.0<br></br>
             </p>
             <p class="subtitle is-size-6-desktop  is-size-7-touch">
+              {desc ? '' : info["locName"]}
+              {desc? '': <br></br>}
+                    
               {/* {info["locName"]}
               <br></br> */}
               {new Intl.DateTimeFormat("en-US").format(
