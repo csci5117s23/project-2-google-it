@@ -2,12 +2,12 @@ import Link from 'next/link';
 import { React, useState } from "react";
 import "bulma/css/bulma.min.css";
 
-export default function ListItem({ info, desc }) {
+export default function ListItem({ info, personal }) {
   const imgS3URL = info["imgURL"];
   let imgURL = imgS3URL;
   return (
   <Link href={'/view/' + info['_id']}>
-    <div class="card" style={{background:((info["personal"] && "#88CFF2") || ("#D89AF5")), borderRadius:"1em",boxShadow: "0px 3px 4px #b5b5b5", border:"2.5px solid #615EFF",}}>
+    <div class="card" style={{background:((personal && "#88CFF2") || ("#D89AF5")), borderRadius:"1em", boxShadow: "0px 3px 4px #b5b5b5", border:"2.5px solid #615EFF",}}>
       <div class="card-content" style={{padding:"1.7vh"}}>
         <div class="media" style={{alignItems: "center"}}>
           <div class="media-left"> 
@@ -60,15 +60,11 @@ export default function ListItem({ info, desc }) {
               {info["bevName"]}
               <br></br>
               {info["rating"].toFixed(1)} / 5.0<br></br>
-            </p>
-            <p class="subtitle is-size-6-desktop  is-size-7-touch">
-              {desc ? '' : info["locName"]}
-              {desc? '': <br></br>}
-              {new Intl.DateTimeFormat("en-US").format(
-                new Date(info["createdOn"])
-              )}
-              <br></br>
-            </p>
+              </p>
+              <p class="subtitle is-size-6-desktop  is-size-7-touch">
+                {info["locName"]}<br></br>
+                {new Intl.DateTimeFormat('en-US').format(new Date(info["createdOn"]))}<br></br>
+              </p>
           </div>
         </div>
       </div>
