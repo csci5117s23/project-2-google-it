@@ -2,7 +2,7 @@ import {React, useState} from 'react'
 import { MarkerF, InfoWindow } from "@react-google-maps/api";
 import BevaryItem from "./listItem"
 
-export default function MobileMapInfoWindow({info, setOpen, idx, curOpen}){
+export default function MapInfoWindow({info, setOpen, idx, curOpen}){
   const [isOpen, setIsOpen] = useState(false);
   const lat = info[0]["lat"];
   const long = info[0]["lng"];
