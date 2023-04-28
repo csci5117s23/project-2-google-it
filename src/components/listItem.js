@@ -64,9 +64,6 @@ export default function ListItem({ info, desc }) {
             <p class="subtitle is-size-6-desktop  is-size-7-touch">
               {desc ? '' : info["locName"]}
               {desc? '': <br></br>}
-                    
-              {/* {info["locName"]}
-              <br></br> */}
               {new Intl.DateTimeFormat("en-US").format(
                 new Date(info["createdOn"])
               )}
