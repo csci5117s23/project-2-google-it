@@ -184,13 +184,6 @@ export default function MyComponent() {
 		setChecked(!checked);
 	}
 
-	const onMarkerLoad = (marker) => {
-		console.log("marker: ", marker);
-	};
-	const onInfoLoad = infoWindow => {
-		console.log('infoWindow: ', infoWindow)
-	  }
-
 	if(loading){
 		
 		return (<>
