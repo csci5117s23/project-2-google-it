@@ -6,8 +6,8 @@ import { GoogleMap, LoadScript, LoadScriptNext, MarkerF, InfoWindow, Marker, use
 import EditBevButton from './editBevButton';
 
 const containerStyle = {
-	width: '400px',
-	height: '400px'
+	width: '375px',
+	height: '390px'
   };
   
   const center = {
@@ -22,8 +22,8 @@ export default function ViewEntry({data, canEdit}){
 
 
 	return(<>
-	<div class="columns">
-		<div class="column" style={{marginLeft: 'auto', marginRight: 'auto', textAlign: 'center', display:"flex", flexDirection:"column", alignItems:"center"}}>
+	<div class="columns" style={{margin:"0px",}}>
+		<div class="column" style={{textAlign: 'center', display:"flex", flexDirection:"column", alignItems:"center"}}>
 			<div>
 				{canEdit ? <EditBevButton info={data}/> : <></>}
 			</div>
@@ -59,6 +59,7 @@ export default function ViewEntry({data, canEdit}){
     				</MarkerF>
 				</GoogleMap>
 			</LoadScriptNext>}
+			
 		</div>
 	</div>
 		
