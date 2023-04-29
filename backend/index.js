@@ -48,7 +48,7 @@ app.use('/bevEntry/:id', async (req, res, next) => {
     const conn = await Datastore.open();
     try {
         const doc = await conn.getOne('bevEntry', id)
-        if (doc.userId != userId) {
+        if (doc.userId != userId && doc.private) {
             // authenticated user doesn't own this document.
             res.status(403).json({}).end(); // end is like "quit this request"
             return;
@@ -65,7 +65,6 @@ app.use('/bevEntry/:id', async (req, res, next) => {
 })
 
 app.use('/publicEntries', async (req, res) => {
-	// TODO: THIS NEEDS TO BE UPDATED ONCE AUTH DONE
   const userId = req.user_token.sub
 
 	// let's check access rights for the document being read/updated/replaced/deleted

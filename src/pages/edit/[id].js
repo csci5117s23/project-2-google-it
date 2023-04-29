@@ -16,7 +16,7 @@ export default function EditPage(){
 	const router = useRouter()
 	const { id } = router.query
 	useEffect(() => {
-		if (router.isReady){
+		if (router.isReady && userId){
 			const fetchData = async () => {
 				const token = await getToken({template: "BevaryTemplate"})
 				const response = await fetch(API_ENDPOINT + "/bevEntry/" + id, {
@@ -28,6 +28,10 @@ export default function EditPage(){
 					router.push("/403");
 				}
 				const data = await response.json()
+
+				if(userId != data["userId"]){
+					router.push("/403");
+				}
 				// update state -- configured earlier.
 				console.log(data)
 				setData(data)
