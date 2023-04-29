@@ -27,8 +27,13 @@ export default function ViewEntry({data, canEdit}){
 			<div>
 				{canEdit ? <EditBevButton info={data}/> : <></>}
 			</div>
-			<h2 className="title is-3">{data['bevName']}</h2>
-			<h3 className='subtitle is-5'>{date.toDateString()}</h3>
+			<div style={{backgroundColor:"rgb(136, 207, 242)",padding:"10px 40px", borderRadius:"10px"}}>
+			<h2 className="title is-3" style={{color:"white"}}>{data['bevName']}</h2>
+			<h3 className='subtitle is-5' style={{color:"white"}}>{date.toDateString()}</h3>
+			</div>
+			<br></br>
+			<div style={{backgroundColor:"rgb(136, 207, 242)",width:"90%",height:"5px"}}></div>
+			<br></br>
 			{data['imgURL'] ? <img style={{height: '200px', width: '200px'}} src={data['imgURL']}/> : <></>}
 			<ReactStars
 				count={5}
@@ -39,7 +44,11 @@ export default function ViewEntry({data, canEdit}){
 				edit={false}
 			/>
 			{data["desc"] !== "" ? <div style={{whiteSpace:"pre-line"}}>Description: {data["desc"]}</div> : <></>}
-			<div>
+			{/* <div>
+				This beverage was acquired at {data['locName']} (Location below)
+			</div>
+			 */}
+			<div style={{backgroundColor:"rgb(136, 207, 242)",padding:"10px 40px", borderRadius:"10px", color:"white", margin:"10px 0px"}}>
 				This beverage was acquired at {data['locName']} (Location below)
 			</div>
 			{<LoadScriptNext
