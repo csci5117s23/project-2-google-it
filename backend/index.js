@@ -21,7 +21,6 @@ const userAuth = async (req, res, next) => {
       }
       next();
     } catch (error) {
-	  console.log("oops");
       next(error);
     } 
   }
@@ -65,10 +64,10 @@ app.use('/bevEntry/:id', async (req, res, next) => {
     next();
 })
 
-app.get('/publicEntries', async (req, res) => {
+app.use('/publicEntries', async (req, res) => {
 	// TODO: THIS NEEDS TO BE UPDATED ONCE AUTH DONE
-	// const userId = req.user_token.sub
-	const userId = "user_2Oq1CGG1CKCOgP3yxgJsfrpiMax";
+  const userId = req.user_token.sub
+
 	// let's check access rights for the document being read/updated/replaced/deleted
 	const conn = await Datastore.open();
 	try {

@@ -76,7 +76,7 @@ export default function MyComponent() {
 				// NEEDS AUTH
 				const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
 					'method':'GET',
-					'headers': {'x-apikey': API_KEY}
+					'headers': {'Authorization': 'Bearer ' + token}
 				})
 				const publicData = await publicResponse.json()
 				var publicMap = new Map(userMap);
