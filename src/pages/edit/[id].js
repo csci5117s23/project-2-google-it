@@ -23,14 +23,18 @@ export default function EditPage(){
 					'method':'GET',
 					'headers': {'Authorization': 'Bearer ' + token}
 				})
-			const data = await response.json()
-			// update state -- configured earlier.
-			console.log(data)
-			setData(data)
-			setLoading(false)
+				// Check if access allowed
+				if(response.status === 403){
+					router.push("/403");
+				}
+				const data = await response.json()
+				// update state -- configured earlier.
+				console.log(data)
+				setData(data)
+				setLoading(false)
 			}
 			fetchData();
-		
+			
 			
 		}
 		

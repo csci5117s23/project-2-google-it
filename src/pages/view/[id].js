@@ -26,6 +26,7 @@ export default function ViewPage(){
 					'headers': {'Authorization': 'Bearer ' + token}
 				})
 
+				// Check if access allowed
 				if(response.status === 403){
 					router.push("/403");
 				}
