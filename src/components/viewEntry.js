@@ -27,8 +27,8 @@ export default function ViewEntry({data, canEdit}){
 			<div>
 				{canEdit ? <EditBevButton info={data}/> : <></>}
 			</div>
-			<h1>{data['bevName']}</h1>
-			<h3>{date.toDateString()}</h3>
+			<h2 className="title is-3">{data['bevName']}</h2>
+			<h3 className='subtitle is-5'>{date.toDateString()}</h3>
 			{data['imgURL'] ? <img style={{height: '200px', width: '200px'}} src={data['imgURL']}/> : <></>}
 			<ReactStars
 				count={5}

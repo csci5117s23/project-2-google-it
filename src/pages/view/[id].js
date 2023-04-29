@@ -50,6 +50,10 @@ export default function ViewPage(){
 	} else {
 		return(<>
 			<Header title={"Bevary"}/>
+			<div onClick={() => router.back()} style={{display:"flex", flexDirection:"row", alignItems:"center", color: "#485fc7", cursor:"pointer", paddingLeft:"5px", paddingTop:"5px"}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="calc(6px + 3vmin)" height="calc(5px + 3vmin)" viewBox="0 0 24 24"><path fill="currentColor" d="m12 20l-8-8l8-8l1.425 1.4l-5.6 5.6H20v2H7.825l5.6 5.6L12 20Z"/></svg>
+              <div style={{fontSize:"calc(6px + 2vmin)", paddingRight:"6px"}}>Go Back</div>
+            </div>
 			<ViewEntry data={data} canEdit={canEdit}/>
 			<div class="spacing"></div>
 			<NavBar/>
