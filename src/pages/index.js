@@ -12,7 +12,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const router = useRouter();
+  const pathname  = router.pathname;
   const { isLoaded, userId } = useAuth();
+  if (!userId && pathname !== "/"){
+		router.push("/")
+  }
   if (!isLoaded || !userId) {
     return (
       <>
