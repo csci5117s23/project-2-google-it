@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
 import ReactStars from "react-rating-stars-component";
 import { LoadScriptNext } from "@react-google-maps/api";
+import Loading from "@/components/loading";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -16,18 +17,20 @@ AWS.config.credentials = new AWS.CognitoIdentityCredentials({
   IdentityPoolId: IDENTITY_POOL_ID,
 });
 
-export default function AddEditBevForm({data}) {
+export default function AddEditBevForm({ data }) {
   const [bevPos, setBevPos] = useState({
-	lat: data['lat'],
-	lng: data['lng']
+    lat: data["lat"],
+    lng: data["lng"],
   });
-  const [toggleLabel, setToggleLabel] = useState(data['private'] ? "Private" : "Public");
-  const [publicPost, setPublicPost] = useState(data['private'] ? false : true);
-  console.log(publicPost, data['private'])
-  console.log(toggleLabel, data['private'])
-  const [ratingValue, setRatingValue] = useState(data['rating']);
+  const [toggleLabel, setToggleLabel] = useState(
+    data["private"] ? "Private" : "Public"
+  );
+  const [publicPost, setPublicPost] = useState(data["private"] ? false : true);
+  console.log(publicPost, data["private"]);
+  console.log(toggleLabel, data["private"]);
+  const [ratingValue, setRatingValue] = useState(data["rating"]);
   const [loading, setLoading] = useState(false);
-  const [imgSrc, setImgSrc] = useState(data['imgURL'] ? data['imgURL'] : "")
+  const [imgSrc, setImgSrc] = useState(data["imgURL"] ? data["imgURL"] : "");
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
@@ -113,7 +116,7 @@ export default function AddEditBevForm({data}) {
     const img = document.getElementById("imgPreview");
     const imgDiv = document.getElementById("photoPreviewDiv");
     imgDiv.setAttribute("class", "");
-	setImgSrc(URL.createObjectURL(fileInput.files[0]))
+    setImgSrc(URL.createObjectURL(fileInput.files[0]));
     // img.setAttribute("src", URL.createObjectURL(fileInput.files[0]));
     img.onload = function () {
       URL.revokeObjectURL(img.src); // free memory
@@ -128,7 +131,7 @@ export default function AddEditBevForm({data}) {
     photoUploadDiv.setAttribute("class", "file is-large is-boxed");
     const fileInput = document.getElementsByClassName("file-input")[0];
     fileInput.value = "";
-	setImgSrc("")
+    setImgSrc("");
   }
 
   const handleSubmit = async (event) => {
@@ -140,7 +143,7 @@ export default function AddEditBevForm({data}) {
     const bevRating = ratingValue;
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
-	console.log("LAT LNG", bevPos["lat"], bevPos["lng"])
+    console.log("LAT LNG", bevPos["lat"], bevPos["lng"]);
     if (bevName === "") {
       alert("A drink name is required to save an entry");
       setLoading(false);
@@ -162,25 +165,29 @@ export default function AddEditBevForm({data}) {
       desc: bevDescription,
       userID: userId,
       private: !publicPost,
-	  imgURL: imgSrc
+      imgURL: imgSrc,
     };
 
     const token = await getToken({ template: "BevaryTemplate" });
-    const backendResponse = await fetch(API_ENDPOINT + "/bevEntry/" + data['_id'], {
-      method: "PATCH",
-      headers: {
-        Authorization: "Bearer " + token,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(uploadData),
-    });
+    const backendResponse = await fetch(
+      API_ENDPOINT + "/bevEntry/" + data["_id"],
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(uploadData),
+      }
+    );
 
     const backendData = await backendResponse.json();
     if (img) {
       const bevID = backendData["_id"];
       // https://stackoverflow.com/questions/3486625/remove-illegal-url-characters-with-javascript
-	  const epoch = String(Date.now())
-      imgLocation += bevID + "/" + epoch + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
+      const epoch = String(Date.now());
+      imgLocation +=
+        bevID + "/" + epoch + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
       console.log(imgLocation, img);
 
       var upload = new AWS.S3.ManagedUpload({
@@ -228,166 +235,171 @@ export default function AddEditBevForm({data}) {
   };
 
   if (loading) {
-    return <div>Loading!</div>;
+    return <Loading />;
   } else {
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-		<LoadScriptNext googleMapsApiKey={GOOGLE_API_KEY} libraries={["places"]} />
+        <LoadScriptNext
+          googleMapsApiKey={GOOGLE_API_KEY}
+          libraries={["places"]}
+        />
         <div class="section">
           <div class="container">
             <form>
-              <div class="columns">
-				{data["imgURL"] && data["imgURL"] !== "" ?
-				<div class="column">
-				<div id="photoPreviewDiv">
-				  <img
-					style={{ margin: "0 auto" }}
-					class="image is-128x128"
-					id="imgPreview"
-					src={imgSrc}
-				  />
-				  <button
-					type="button"
-					class="button is-large is-danger is-fullwidth"
-					onClick={handleNewPhoto}
-				  >
-					Change Photo
-				  </button>
-				</div>
-				<div id="photoUpload" class="file is-large is-boxed is-hidden">
-				  <label class="file-label">
-					<input
-					  class="file-input"
-					  type="file"
-					  accept="image/*"
-					  name="bevPhoto"
-					  onChange={handlePhotoUpload}
-					/>
-					<div className="slideTopFadeIn">
-					  <span class="file-cta">
-						<span class="icon is-large">
-						  <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
-						</span>
-						<span class="file-label">Upload a picture!</span>
-					  </span>
-					</div>
-				  </label>
-				</div>
-			  </div>
-				
-				: 
-                <div class="column">
-                  <div class="is-hidden" id="photoPreviewDiv">
-                    <img
-                      style={{ margin: "0 auto" }}
-                      class="image is-128x128"
-                      id="imgPreview"
-					  src={imgSrc}
-                    />
-                    <button
-                      type="button"
-                      class="button is-large is-danger is-fullwidth"
-                      onClick={handleNewPhoto}
-                    >
-                      Change Photo
-                    </button>
-                  </div>
-                  <div id="photoUpload" class="file is-large is-boxed">
-                    <label class="file-label">
-                      <input
-                        class="file-input"
-                        type="file"
-                        accept="image/*"
-                        name="bevPhoto"
-                        onChange={handlePhotoUpload}
-                      />
-                      <div className="slideTopFadeIn">
-                        <span class="file-cta">
-                          <span class="icon is-large">
-                            <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
-                          </span>
-                          <span class="file-label">Upload a picture!</span>
-                        </span>
+              <div className="fastFadeIn">
+                <div class="columns">
+                  {data["imgURL"] && data["imgURL"] !== "" ? (
+                    <div class="column">
+                      <div id="photoPreviewDiv">
+                        <img
+                          style={{ margin: "0 auto" }}
+                          class="image is-128x128"
+                          id="imgPreview"
+                          src={imgSrc}
+                        />
+                        <button
+                          type="button"
+                          class="button is-large is-danger is-fullwidth"
+                          onClick={handleNewPhoto}
+                        >
+                          Change Photo
+                        </button>
                       </div>
-                    </label>
-                  </div>
-                </div>
-  				}
-                <div class="column" className="fadeIn">
-                  <div class="field">
-                    <label class="label">
-                      Should this post be private or public?
-                    </label>
-                    <div class="control">
-                      <Toggle
-                        label={toggleLabel}
-                        toggled={publicPost}
-                        onClick={toggleState}
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Drink Name</label>
-                    <div class="control">
-                      <input
-                        class="input"
-                        type="text"
-                        id="bevName"
-                        placeholder="Text input"
-						defaultValue={data['bevName']}
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Restaurant/Location</label>
-                    <div class="control">
-                      <input
-                        id="bevLocation"
-                        class="input"
-                        type="text"
-                        placeholder="Text input"
-						defaultValue={data['locName']}
-                        required
-                      />
-                      <button
-                        type="button"
-                        onClick={getCurrentLocation}
-                        class="button is-link"
+                      <div
+                        id="photoUpload"
+                        class="file is-large is-boxed is-hidden"
                       >
-                        Use Current Location
-                      </button>
+                        <label class="file-label">
+                          <input
+                            class="file-input"
+                            type="file"
+                            accept="image/*"
+                            name="bevPhoto"
+                            onChange={handlePhotoUpload}
+                          />
+                          <div className="slideTopFadeIn">
+                            <span class="file-cta">
+                              <span class="icon is-large">
+                                <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
+                              </span>
+                              <span class="file-label">Upload a picture!</span>
+                            </span>
+                          </div>
+                        </label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Rating (1-5)</label>
-                    <div class="control">
-                      <ReactStars
-                        count={5}
-                        isHalf={true}
-                        onChange={ratingChanged}
-                        size={24}
-						value={ratingValue}
-                        activeColor="#ffd700"
-                      />
+                  ) : (
+                    <div class="column">
+                      <div class="is-hidden" id="photoPreviewDiv">
+                        <img
+                          style={{ margin: "0 auto" }}
+                          class="image is-128x128"
+                          id="imgPreview"
+                          src={imgSrc}
+                        />
+                        <button
+                          type="button"
+                          class="button is-large is-danger is-fullwidth"
+                          onClick={handleNewPhoto}
+                        >
+                          Change Photo
+                        </button>
+                      </div>
+                      <div id="photoUpload" class="file is-large is-boxed">
+                        <label class="file-label">
+                          <input
+                            class="file-input"
+                            type="file"
+                            accept="image/*"
+                            name="bevPhoto"
+                            onChange={handlePhotoUpload}
+                          />
+                          <span class="file-cta">
+                            <span class="icon is-large">
+                              <img src="https://cdn-icons-png.flaticon.com/512/3566/3566345.png" />
+                            </span>
+                            <span class="file-label">Upload a picture!</span>
+                          </span>
+                        </label>
+                      </div>
                     </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Anything memorable to add?</label>
-                    <div class="control">
-                      <textarea
-                        class="textarea"
-                        id="bevDescription"
-                        placeholder="This beer sucked"
-						defaultValue={data['desc']}
-                      ></textarea>
+                  )}
+                  <div class="column" className="fastFadeIn">
+                    <div class="field">
+                      <label class="label">
+                        Should this post be private or public?
+                      </label>
+                      <div class="control">
+                        <Toggle
+                          label={toggleLabel}
+                          toggled={publicPost}
+                          onClick={toggleState}
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Drink Name</label>
+                      <div class="control">
+                        <input
+                          class="input"
+                          type="text"
+                          id="bevName"
+                          placeholder="Text input"
+                          defaultValue={data["bevName"]}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Restaurant/Location</label>
+                      <div class="control">
+                        <input
+                          id="bevLocation"
+                          class="input"
+                          type="text"
+                          placeholder="Text input"
+                          defaultValue={data["locName"]}
+                          required
+                        />
+                        <button
+                          type="button"
+                          onClick={getCurrentLocation}
+                          class="button is-link"
+                        >
+                          Use Current Location
+                        </button>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Rating (1-5)</label>
+                      <div class="control">
+                        <ReactStars
+                          count={5}
+                          isHalf={true}
+                          onChange={ratingChanged}
+                          size={24}
+                          value={ratingValue}
+                          activeColor="#ffd700"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Anything memorable to add?</label>
+                      <div class="control">
+                        <textarea
+                          class="textarea"
+                          id="bevDescription"
+                          placeholder="This beer sucked"
+                          defaultValue={data["desc"]}
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </form>
-            <div className="fadeIn">
+            <div className="fastFadeIn">
               <div class="column">
                 <div class="field">
                   <div class="control">
