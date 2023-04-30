@@ -6,7 +6,7 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 
 - Team Name: GoogleIt
 - App Name: Bevary
-- App Link: <https://TODO.com/>
+- App Link: <https://incandescent-duckanoo-24e275.netlify.app/>
 
 ### Students
 
@@ -20,11 +20,13 @@ CSCI 5117, Spring 2022, [assignment description](https://canvas.umn.edu/courses/
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-- ...
+- Implementing the Google Maps Integration was challenging because we use maps in multiple places throughout the website as well as the Google Places Library. Google has funky restrictions about loading in their js multiple times.
+
+- Integrating with Amazon S3 was challenging because the existing react component integrations were not very effective. We had to set up an identity pool with specific access on the AWS side and use that in order to upload photos to the buckets.
 
 Which (if any) device integration(s) does your app support?
 
-- ...
+- Our website supports camera integration for mobile devices when uploading photos.
 
 Which (if any) progressive web app feature(s) does your app support?
 
@@ -73,7 +75,9 @@ along with a very brief caption:**
 Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 
 - Library or service name: description of use
-- ...
+- Google Maps
+- Google Places
+- Amazon S3
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
