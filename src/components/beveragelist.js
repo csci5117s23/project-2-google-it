@@ -33,6 +33,7 @@ export default function BeverageList({ listItems, deleteEntry }) {
           >
             <div class="column">
               <ListItem info={listItems[i]} personal={true}></ListItem>
+              <div style={{height:"5px"}}></div>
               <DeleteAndEditButtons
                 info={listItems[i]}
                 deleteEntry={deleteEntry}
@@ -40,6 +41,7 @@ export default function BeverageList({ listItems, deleteEntry }) {
             </div>
             <div class="column">
               <ListItem info={listItems[i + 1]} personal={true}></ListItem>
+              <div style={{height:"5px"}}></div>
               <DeleteAndEditButtons
                 info={listItems[i + 1]}
                 deleteEntry={deleteEntry}

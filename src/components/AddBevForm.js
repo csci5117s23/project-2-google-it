@@ -195,7 +195,7 @@ export default function AddBevForm() {
             {
               method: "PATCH",
               headers: {
-                "x-apikey": API_KEY,
+                Authorization: "Bearer " + token,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(imdLocData),

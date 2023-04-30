@@ -50,7 +50,7 @@ export default function MyComponent() {
 				setToken(token)
 				console.log(API_ENDPOINT + "/bevEntry")
 				// THIS NEEDS AUTH
-				const userResponse = await fetch(API_ENDPOINT + "/bevEntry?userID=" + userId, {
+				const userResponse = await fetch(API_ENDPOINT + "/bevEntry", {
 					'method':'GET',
 					'headers': {'Authorization': 'Bearer ' + token}
 				})
@@ -77,13 +77,12 @@ export default function MyComponent() {
 				// NEEDS AUTH
 				const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
 					'method':'GET',
-					'headers': {'x-apikey': API_KEY}
+					'headers': {'Authorization': 'Bearer ' + token}
 				})
 				const publicData = await publicResponse.json()
 				var publicMap = new Map(userMap);
-				const filteredData = publicData.filter(item => item["userID"] != userId)
 
-				filteredData.map(entry => {
+				publicData.map(entry => {
 					const lat = entry["lat"];
 					const lng = entry["lng"];
 					const key = lat + "," + lng;
@@ -184,13 +183,6 @@ export default function MyComponent() {
 		}
 		setChecked(!checked);
 	}
-
-	const onMarkerLoad = (marker) => {
-		console.log("marker: ", marker);
-	};
-	const onInfoLoad = infoWindow => {
-		console.log('infoWindow: ', infoWindow)
-	  }
 
 	if(loading){
 		
