@@ -390,7 +390,7 @@ export default function AddEditBevForm({ data }) {
                         <textarea
                           class="textarea"
                           id="bevDescription"
-                          placeholder="This beer sucked"
+                          placeholder="This drink sucked"
                           defaultValue={data["desc"]}
                         ></textarea>
                       </div>

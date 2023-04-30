@@ -27,22 +27,22 @@ export default function AddBevForm() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
-	if (bevLoc) {
-		bevLoc.addEventListener("keyup", function () {
-			var input = document.getElementById("bevLocation");
-			var autocomplete = new google.maps.places.Autocomplete(input);
-			autocomplete.addListener("place_changed", () => {
-			const place = autocomplete.getPlace();
-			console.log(place.geometry);
-			if (place.geometry) {
-				setBevPos(place.geometry.location.toJSON());
-				console.log(place.geometry.location.toJSON());
-			} else {
-				// alert("Not a valid location chosen")
-			}
-			});
-		});
-	}
+    if (bevLoc) {
+      bevLoc.addEventListener("keyup", function () {
+        var input = document.getElementById("bevLocation");
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place.geometry);
+          if (place.geometry) {
+            setBevPos(place.geometry.location.toJSON());
+            console.log(place.geometry.location.toJSON());
+          } else {
+            // alert("Not a valid location chosen")
+          }
+        });
+      });
+    }
   });
 
   const toggleState = (state) => {
@@ -223,7 +223,10 @@ export default function AddBevForm() {
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-		<LoadScriptNext googleMapsApiKey={GOOGLE_API_KEY} libraries={["places"]} />
+        <LoadScriptNext
+          googleMapsApiKey={GOOGLE_API_KEY}
+          libraries={["places"]}
+        />
         <div class="section">
           <div class="container">
             <form>
@@ -325,7 +328,7 @@ export default function AddBevForm() {
                       <textarea
                         class="textarea"
                         id="bevDescription"
-                        placeholder="This beer sucked"
+                        placeholder="This drink sucked"
                       ></textarea>
                     </div>
                   </div>
