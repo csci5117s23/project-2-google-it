@@ -84,6 +84,17 @@
   z-index: 1;
 }
 
+.noBevary {
+  width: 100%;
+  height: 85vh;
+  position: fixed;
+  background: white
+    url("https://media.tenor.com/kZEWNXtOmi8AAAAi/bubu-yier-iklog.gif") center
+    no-repeat;
+  background-size: 10rem;
+  z-index: 1;
+}
+
 .loadingBar {
   width: 40%;
   position: absolute;

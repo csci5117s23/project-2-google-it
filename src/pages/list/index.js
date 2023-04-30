@@ -9,21 +9,10 @@ import Loading from "@/components/loading";
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 export default function List() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
 
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const token = await getToken({ template: "BevaryTemplate" });
-    //   const response = await fetch(API_ENDPOINT + "/bevEntry", {
-    //     method: "GET",
-    //     headers: { Authorization: "Bearer " + token },
-    //   });
-    //   const data = await response.json();
-
-    //   setData(data);
-    // };
     const fetchData = async () => {
       const token = await getToken({ template: "BevaryTemplate" });
       const response = await fetch(API_ENDPOINT + "/bevEntry", {
@@ -45,11 +34,10 @@ export default function List() {
 
       const locations = [...locationMap].map((location) => location[1]);
 
-      setData(data);
       setLocations(locations);
+      setLoading(false);
     };
     fetchData();
-    setLoading(false);
   }, []);
 
   if (loading) {
@@ -66,14 +54,15 @@ export default function List() {
     if (locations.length !== 0) {
       noEntries = false;
     }
+
     return (
       <>
         <Header title={"Bevary"} />
         <div className="fastBottomSlide">
           {noEntries ? (
-            <div class="section loading">
+            <div class="section noBevary">
               <div class="box">
-                <h1 class="title centerText">
+                <h1 class="title centerText fastFadeIn">
                   Tap the <span class="has-text-success">Green +</span> to add
                   an entry into your Bevary!
                 </h1>
