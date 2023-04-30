@@ -30,13 +30,15 @@ export default function AddEditBevForm({ data }) {
   console.log(toggleLabel, data["private"]);
   const [ratingValue, setRatingValue] = useState(data["rating"]);
   const [loading, setLoading] = useState(false);
-  const [imgSrc, setImgSrc] = useState(data["imgURL"] ? data["imgURL"] : "");
+  const [gatheringLocation, setGatheringLocation] = useState(false)
+  const [imgSrc, setImgSrc] = useState(data['imgURL'] ? data['imgURL'] : "")
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
     if (bevLoc) {
       bevLoc.addEventListener("keyup", function () {
+		setGatheringLocation(false);
         var input = document.getElementById("bevLocation");
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener("place_changed", () => {
@@ -68,6 +70,7 @@ export default function AddEditBevForm({ data }) {
 
   const getCurrentLocation = async () => {
     if ("geolocation" in navigator) {
+		setGatheringLocation(true);
       var input = document.getElementById("bevLocation");
       console.log("Available");
       input.value = "Getting Current Location Address";
@@ -104,6 +107,7 @@ export default function AddEditBevForm({ data }) {
         const data = await response.json();
         console.log(data);
         input.value = data.results[0].formatted_address;
+		setGatheringLocation(false);
       });
     } else {
       alert("Using Current Location is not available");
@@ -403,6 +407,16 @@ export default function AddEditBevForm({ data }) {
               <div class="column">
                 <div class="field">
                   <div class="control">
+				  {gatheringLocation ? 
+					<button
+					type="submit"
+					onClick={handleSubmit}
+					class="button is-success"
+					disabled={true}
+				  >
+					Attempting to access current location...
+				  </button>
+					:
                     <button
                       type="submit"
                       onClick={handleSubmit}
@@ -410,6 +424,7 @@ export default function AddEditBevForm({ data }) {
                     >
                       Save Entry!
                     </button>
+  					}
                   </div>
                 </div>
               </div>
