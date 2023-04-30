@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs";
 import Header from '@/components/header';
 import AddBevForm from '@/components/AddBevForm';
 import NavBar from '@/components/nav';
+import Loading from '@/components/loading';
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY
@@ -14,7 +15,7 @@ export default function AddEntryPage (){
 
 		return (<>
 			<Header title={"Bevary"} />
-			<div>Loading...</div>
+			<Loading />
 		</>	
 		)
 

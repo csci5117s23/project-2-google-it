@@ -5,6 +5,7 @@ import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
 import ReactStars from "react-rating-stars-component";
 import { LoadScriptNext } from "@react-google-maps/api";
+import Loading from "./loading";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
@@ -221,12 +222,15 @@ export default function AddBevForm() {
   };
 
   if (loading) {
-    return <div>Loading!</div>;
+    return <Loading />;
   } else {
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-		<LoadScriptNext googleMapsApiKey={GOOGLE_API_KEY} libraries={["places"]} />
+        <LoadScriptNext
+          googleMapsApiKey={GOOGLE_API_KEY}
+          libraries={["places"]}
+        />
         <div class="section">
           <div class="container">
             <form>
@@ -328,7 +332,7 @@ export default function AddBevForm() {
                       <textarea
                         class="textarea"
                         id="bevDescription"
-                        placeholder="This beer sucked"
+                        placeholder="This drink sucked"
                       ></textarea>
                     </div>
                   </div>

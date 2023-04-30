@@ -73,6 +73,35 @@
   overflow: hidden;
 }
 
+.loading {
+  width: 100%;
+  height: 75vh;
+  position: fixed;
+  background: white
+    url("https://media.tenor.com/Oovb0nqp-TgAAAAC/puglie-pug-puglie.gif") center
+    no-repeat;
+  background-size: 15rem;
+  z-index: 1;
+}
+
+.noBevary {
+  width: 100%;
+  height: 85vh;
+  position: fixed;
+  background: white
+    url("https://media.tenor.com/kZEWNXtOmi8AAAAi/bubu-yier-iklog.gif") center
+    no-repeat;
+  background-size: 10rem;
+  z-index: 1;
+}
+
+.loadingBar {
+  width: 40%;
+  position: absolute;
+  top: 65%;
+  left: 30%;
+}
+
 /* Fancy css for animations */
 
 @keyframes slideTopFadeIn {
@@ -112,9 +141,17 @@
 }
 
 .slideBottomFadeIn {
-  animation: 2.5s ease-in-out -1s 1 slidBottomFadeIn;
+  animation: 2.5s ease-in-out -1s 1 slideBottomFadeIn;
 }
 
 .fadeIn {
   animation: 1s ease-in-out 1s 1 both fadeIn;
+}
+
+.fastFadeIn {
+  animation: 0.5s ease-in-out 0s 1 both fadeIn;
+}
+
+.fastBottomSlide {
+  animation: 1s ease-in-out 0s 1 slideBottomFadeIn;
 }
