@@ -22,29 +22,29 @@ export default function AddBevForm() {
   const [toggleLabel, setToggleLabel] = useState("Private");
   const [publicPost, setPublicPost] = useState(false);
   const [ratingValue, setRatingValue] = useState(0);
-  const [gatheringLocation, setGatheringLocation] = useState(false)
+  const [gatheringLocation, setGatheringLocation] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
-	if (bevLoc) {
-		bevLoc.addEventListener("keyup", function () {
-			setGatheringLocation(false);
-			var input = document.getElementById("bevLocation");
-			var autocomplete = new google.maps.places.Autocomplete(input);
-			autocomplete.addListener("place_changed", () => {
-			const place = autocomplete.getPlace();
-			console.log(place.geometry);
-			if (place.geometry) {
-				setBevPos(place.geometry.location.toJSON());
-				console.log(place.geometry.location.toJSON());
-			} else {
-				// alert("Not a valid location chosen")
-			}
-			});
-		});
-	}
+    if (bevLoc) {
+      bevLoc.addEventListener("keyup", function () {
+        setGatheringLocation(false);
+        var input = document.getElementById("bevLocation");
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          console.log(place.geometry);
+          if (place.geometry) {
+            setBevPos(place.geometry.location.toJSON());
+            console.log(place.geometry.location.toJSON());
+          } else {
+            // alert("Not a valid location chosen")
+          }
+        });
+      });
+    }
   });
 
   const toggleState = (state) => {
@@ -63,7 +63,7 @@ export default function AddBevForm() {
   const getCurrentLocation = async () => {
     if ("geolocation" in navigator) {
       var input = document.getElementById("bevLocation");
-	  setGatheringLocation(true);
+      setGatheringLocation(true);
       console.log("Available");
       input.value = "Getting Current Location Address";
       var lat = 0;
@@ -99,7 +99,7 @@ export default function AddBevForm() {
         const data = await response.json();
         console.log(data);
         input.value = data.results[0].formatted_address;
-		setGatheringLocation(false);
+        setGatheringLocation(false);
       });
     } else {
       alert("Using Current Location is not available");
@@ -235,7 +235,7 @@ export default function AddBevForm() {
           <div class="container">
             <form>
               <div class="columns">
-                <div class="column">
+                <div class="column centerElement">
                   <div class="is-hidden" id="photoPreviewDiv">
                     <img
                       style={{ margin: "0 auto" }}
@@ -343,24 +343,24 @@ export default function AddBevForm() {
               <div class="column">
                 <div class="field">
                   <div class="control">
-					{gatheringLocation ? 
-					<button
-					type="submit"
-					onClick={handleSubmit}
-					class="button is-success"
-					disabled={true}
-				  >
-					Attempting to access current location...
-				  </button>
-					:
-                    <button
-                      type="submit"
-                      onClick={handleSubmit}
-                      class="button is-success"
-                    >
-                      Save Entry!
-                    </button>
-  					}
+                    {gatheringLocation ? (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success mt-2"
+                        disabled={true}
+                      >
+                        Attempting to access current location...
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success mt-2"
+                      >
+                        Save Entry!
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
