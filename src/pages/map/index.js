@@ -1,28 +1,19 @@
 import React, { useEffect, useState } from "react";
-import {
-  GoogleMap,
-  LoadScript,
-  MarkerF,
-  InfoWindow,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import NavBar from "@/components/nav";
 import MapInfoWindow from "@/components/mapinfowindow";
 import { useAuth } from "@clerk/nextjs";
 import Header from "@/components/header";
 import Loading from "@/components/loading";
-//Clerk stuff commented out for now
 
 const containerStyle = {
   width: "100%",
   height: "85%",
 };
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
 
 export default function MyComponent() {
-  const { isLoaded, userId, sessionId, getToken } = useAuth();
+  const { userId, getToken } = useAuth();
   const [currentLocation, setCurrentLocation] = useState({
     lat: 44.9745,
     lng: -93.2322,
@@ -37,7 +28,6 @@ export default function MyComponent() {
   const [userToken, setToken] = useState(null);
   useEffect(() => {
     if ("geolocation" in navigator) {
-      console.log("Available");
       navigator.geolocation.getCurrentPosition(function (position) {
         setCurrentLocation({
           lat: position.coords.latitude,
@@ -53,8 +43,6 @@ export default function MyComponent() {
         // Fetch user entries
         const token = await getToken({ template: "BevaryTemplate" });
         setToken(token);
-        console.log(API_ENDPOINT + "/bevEntry");
-        // THIS NEEDS AUTH
         const userResponse = await fetch(API_ENDPOINT + "/bevEntry", {
           method: "GET",
           headers: { Authorization: "Bearer " + token },
@@ -78,7 +66,6 @@ export default function MyComponent() {
         setLoading(false);
 
         // Fetch public entries
-        // NEEDS AUTH
         const publicResponse = await fetch(API_ENDPOINT + "/publicEntries", {
           method: "GET",
           headers: { Authorization: "Bearer " + token },

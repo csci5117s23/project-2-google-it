@@ -1,4 +1,3 @@
-// import { useAuth } from '@clerk/nextjs';
 import NavBar from "@/components/nav";
 import React, { useEffect, useState } from "react";
 import BeverageList from "@/components/beveragelist";
@@ -7,9 +6,7 @@ import Header from "@/components/header";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-// TODO: REMOVE AFTER AUTH
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
 
 export default function Location() {
   const { isLoaded, userId, sessionId, getToken } = useAuth();

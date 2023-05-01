@@ -19,7 +19,6 @@ export default function ListItem({ info, personal }) {
         <div class="card-content" style={{ padding: "1.7vh" }}>
           <div class="media" style={{ alignItems: "center" }}>
             <div class="media-left">
-              {/* TODO: Replace icon with an actual picture and size it properly*/}
               {!imgS3URL && (
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

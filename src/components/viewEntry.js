@@ -24,7 +24,6 @@ const center = {
 };
 
 export default function ViewEntry({ data, canEdit }) {
-  console.log(data);
   var date = new Date(data["createdOn"]);
 
   return (

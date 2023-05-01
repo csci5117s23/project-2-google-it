@@ -9,7 +9,6 @@ import Loading from "@/components/loading";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
 const BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME;
 const IDENTITY_POOL_ID = process.env.NEXT_PUBLIC_IDENTITY_POOL_ID;
 AWS.config.region = "us-east-2"; // Region
@@ -26,29 +25,25 @@ export default function AddEditBevForm({ data }) {
     data["private"] ? "Private" : "Public"
   );
   const [publicPost, setPublicPost] = useState(data["private"] ? false : true);
-  console.log(publicPost, data["private"]);
-  console.log(toggleLabel, data["private"]);
   const [ratingValue, setRatingValue] = useState(data["rating"]);
   const [loading, setLoading] = useState(false);
-  const [gatheringLocation, setGatheringLocation] = useState(false)
-  const [imgSrc, setImgSrc] = useState(data['imgURL'] ? data['imgURL'] : "")
+  const [gatheringLocation, setGatheringLocation] = useState(false);
+  const [imgSrc, setImgSrc] = useState(data["imgURL"] ? data["imgURL"] : "");
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
     if (bevLoc) {
       bevLoc.addEventListener("keyup", function () {
-		setGatheringLocation(false);
+        setGatheringLocation(false);
         var input = document.getElementById("bevLocation");
         var autocomplete = new google.maps.places.Autocomplete(input);
         autocomplete.addListener("place_changed", () => {
           const place = autocomplete.getPlace();
-          console.log(place.geometry);
           if (place.geometry) {
             setBevPos(place.geometry.location.toJSON());
-            console.log(place.geometry.location.toJSON());
           } else {
-            // alert("Not a valid location chosen")
+            alert("Not a valid location chosen");
           }
         });
       });
@@ -70,29 +65,19 @@ export default function AddEditBevForm({ data }) {
 
   const getCurrentLocation = async () => {
     if ("geolocation" in navigator) {
-		setGatheringLocation(true);
+      setGatheringLocation(true);
       var input = document.getElementById("bevLocation");
-      console.log("Available");
       input.value = "Getting Current Location Address";
       var lat = 0;
       var lng = 0;
       navigator.geolocation.getCurrentPosition(async function (position) {
         lat = position.coords.latitude;
         lng = position.coords.longitude;
-        console.log(lat, lng);
         setBevPos({
           lat: lat,
           lng: lng,
         });
 
-        console.log(
-          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            String(lat) +
-            "," +
-            String(lng) +
-            "&key=" +
-            GOOGLE_API_KEY
-        );
         const response = await fetch(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
             String(lat) +
@@ -105,9 +90,8 @@ export default function AddEditBevForm({ data }) {
           }
         );
         const data = await response.json();
-        console.log(data);
         input.value = data.results[0].formatted_address;
-		setGatheringLocation(false);
+        setGatheringLocation(false);
       });
     } else {
       alert("Using Current Location is not available");
@@ -121,7 +105,6 @@ export default function AddEditBevForm({ data }) {
     const imgDiv = document.getElementById("photoPreviewDiv");
     imgDiv.setAttribute("class", "");
     setImgSrc(URL.createObjectURL(fileInput.files[0]));
-    // img.setAttribute("src", URL.createObjectURL(fileInput.files[0]));
     img.onload = function () {
       URL.revokeObjectURL(img.src); // free memory
     };
@@ -147,7 +130,6 @@ export default function AddEditBevForm({ data }) {
     const bevRating = ratingValue;
     const bevDescription = document.getElementById("bevDescription").value;
     var imgLocation = "bevary/" + userId + "/";
-    console.log("LAT LNG", bevPos["lat"], bevPos["lng"]);
     if (bevName === "") {
       alert("A drink name is required to save an entry");
       setLoading(false);
@@ -192,7 +174,6 @@ export default function AddEditBevForm({ data }) {
       const epoch = String(Date.now());
       imgLocation +=
         bevID + "/" + epoch + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
-      console.log(imgLocation, img);
 
       var upload = new AWS.S3.ManagedUpload({
         params: {
@@ -207,7 +188,6 @@ export default function AddEditBevForm({ data }) {
           const imgURL =
             "https://csci5117-project1-rankit.s3.us-east-2.amazonaws.com/" +
             imgLocation;
-          console.log("IMG URL", imgURL);
           const imdLocData = {
             imgURL: imgURL,
           };
@@ -223,7 +203,6 @@ export default function AddEditBevForm({ data }) {
             }
           );
           const updateImageData = await updateImageResponse.json();
-          console.log(updateImageData);
           router.push("/list");
         },
         function (err) {
@@ -407,24 +386,24 @@ export default function AddEditBevForm({ data }) {
               <div class="column">
                 <div class="field">
                   <div class="control">
-				  {gatheringLocation ? 
-					<button
-					type="submit"
-					onClick={handleSubmit}
-					class="button is-success"
-					disabled={true}
-				  >
-					Attempting to access current location...
-				  </button>
-					:
-                    <button
-                      type="submit"
-                      onClick={handleSubmit}
-                      class="button is-success"
-                    >
-                      Save Entry!
-                    </button>
-  					}
+                    {gatheringLocation ? (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success"
+                        disabled={true}
+                      >
+                        Attempting to access current location...
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success mt-2"
+                      >
+                        Save Entry!
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>

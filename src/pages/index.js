@@ -4,18 +4,15 @@ import { Inter } from "next/font/google";
 import Header from "@/components/header";
 import { Router, useRouter } from "next/router";
 import { useAuth, SignIn } from "@clerk/nextjs";
-import { Icon } from "@iconify/react";
-
-// import styles from '@/styles/Home.module.css'
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const router = useRouter();
-  const pathname  = router.pathname;
+  const pathname = router.pathname;
   const { isLoaded, userId } = useAuth();
-  if (!userId && pathname !== "/"){
-		router.push("/")
+  if (!userId && pathname !== "/") {
+    router.push("/");
   }
   if (!isLoaded || !userId) {
     return (

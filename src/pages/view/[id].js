@@ -20,8 +20,6 @@ export default function ViewPage() {
     if (router.isReady) {
       const fetchData = async () => {
         const token = await getToken({ template: "BevaryTemplate" });
-        console.log(userId);
-        console.log("Inside of useEffect!", router.isReady);
         const response = await fetch(API_ENDPOINT + "/bevEntry/" + id, {
           method: "GET",
           headers: { Authorization: "Bearer " + token },
@@ -34,8 +32,6 @@ export default function ViewPage() {
 
         const data = await response.json();
         // update state -- configured earlier.
-        console.log(response);
-        console.log("USERID COMP", userId, data["userID"]);
         if (userId === data["userID"]) {
           setCanEdit(true);
         }

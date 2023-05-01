@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useAuth } from "@clerk/nextjs";
 import Header from "@/components/header";
 import NavBar from "@/components/nav";
-import ViewEntry from "@/components/viewEntry";
 import AddEditBevForm from "@/components/editBevForm";
 import Loading from "@/components/loading";
 
@@ -33,7 +32,6 @@ export default function EditPage() {
           router.push("/403");
         }
         // update state -- configured earlier.
-        console.log(data);
         setData(data);
         setLoading(false);
       };
@@ -53,7 +51,6 @@ export default function EditPage() {
       <>
         <Header title={"Bevary"} />
         <AddEditBevForm data={data} />
-        {/* <div>{data['_id']}</div> */}
         <div class="spacing"></div>
         <NavBar />
       </>

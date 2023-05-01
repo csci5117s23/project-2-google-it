@@ -1,4 +1,3 @@
-// import { useAuth } from '@clerk/nextjs';
 import NavBar from "@/components/nav";
 import React, { useEffect, useState } from "react";
 import LocationList from "@/components/locationList";
@@ -8,7 +7,7 @@ import Loading from "@/components/loading";
 
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
 export default function List() {
-  const { isLoaded, userId, sessionId, getToken } = useAuth();
+  const { getToken } = useAuth();
   const [loading, setLoading] = useState(true);
   const [locations, setLocations] = useState([]);
 
@@ -41,7 +40,6 @@ export default function List() {
   }, []);
 
   if (loading) {
-    console.log("Loading");
     return (
       <>
         <Header title={"Bevary"} />
