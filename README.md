@@ -30,7 +30,7 @@ Which (if any) device integration(s) does your app support?
 
 Which (if any) progressive web app feature(s) does your app support?
 
-- ...
+- Full responsiveness and browser compatibility, App-like interface, Discoverability and easy installation, Safety.
 
 ## Mockup images
 
@@ -64,10 +64,29 @@ This will be our view from a desktop, it simply combines the two main mobile vie
 
 ## Screenshots of Site (complete)
 
-**[Add a screenshot of each key page](https://stackoverflow.com/questions/10189356/how-to-add-screenshot-to-readmes-in-github-repository)
-along with a very brief caption:**
+![Landing Page](./screenshots/landing.png)
 
-![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
+This is our landing page which includes the clerk Auth component
+
+![List View](./screenshots/list.png)
+
+This is the List View which contains all previous entries sorted alphabetically, with a logout button in the top right and an app-like nav bar at the bottom
+
+![Map View](./screenshots/map.png)
+
+This is the map view which allows you to see all of the locations of places of the beverages you've rated. An example pin has been clicked, and all nearby public bevary entries are toggled viewable.
+
+![Create Entry](./screenshots/create.png)
+
+Creation page of a Bevary entry. Mobile has support of taking a photo from camera, or choosing an image from the camera roll. Has option to make public or private. Field inputs for drink name, location, and memorable things about the drink. Has responsive star rating, and buttons to use current location and to save the entry. **Note: this page is the exact same as the edit page, except the edit page has all fields filled in.**
+
+![Bevary Entries at a Location](./screenshots/locationList.png)
+
+List of bevary entries made at a certain location. Delete and edit buttons for each bevary entry.
+
+![Individual Bevary Entry](./screenshots/bevaryEntry.png)
+
+Your own bevary entry, editable, with ranking and your description and location that you set. Has a go-back navigation link.
 
 ## External Dependencies
 
@@ -83,4 +102,4 @@ Please do not document required libraries (e.g., Vue, Vuefire, Firebase).**
 relied on external code, expertise, or anything else, please disclose that
 here:**
 
-...
+Code references are available in the comments of the respective files.
