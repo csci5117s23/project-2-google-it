@@ -5,10 +5,10 @@ import { useAuth } from "@clerk/nextjs";
 import Toggle from "./Toggle";
 import ReactStars from "react-rating-stars-component";
 import { LoadScriptNext } from "@react-google-maps/api";
+import Loading from "./loading";
 
 const GOOGLE_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
 const API_ENDPOINT = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
-const API_KEY = process.env.NEXT_PUBLIC_BACKEND_API_KEY;
 const BUCKET = process.env.NEXT_PUBLIC_BUCKET_NAME;
 const IDENTITY_POOL_ID = process.env.NEXT_PUBLIC_IDENTITY_POOL_ID;
 AWS.config.region = "us-east-2"; // Region
@@ -21,27 +21,27 @@ export default function AddBevForm() {
   const [toggleLabel, setToggleLabel] = useState("Private");
   const [publicPost, setPublicPost] = useState(false);
   const [ratingValue, setRatingValue] = useState(0);
+  const [gatheringLocation, setGatheringLocation] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const { isLoaded, userId, sessionId, getToken } = useAuth();
   useEffect(() => {
     const bevLoc = document.getElementById("bevLocation");
-	if (bevLoc) {
-		bevLoc.addEventListener("keyup", function () {
-			var input = document.getElementById("bevLocation");
-			var autocomplete = new google.maps.places.Autocomplete(input);
-			autocomplete.addListener("place_changed", () => {
-			const place = autocomplete.getPlace();
-			console.log(place.geometry);
-			if (place.geometry) {
-				setBevPos(place.geometry.location.toJSON());
-				console.log(place.geometry.location.toJSON());
-			} else {
-				// alert("Not a valid location chosen")
-			}
-			});
-		});
-	}
+    if (bevLoc) {
+      bevLoc.addEventListener("keyup", function () {
+        setGatheringLocation(false);
+        var input = document.getElementById("bevLocation");
+        var autocomplete = new google.maps.places.Autocomplete(input);
+        autocomplete.addListener("place_changed", () => {
+          const place = autocomplete.getPlace();
+          if (place.geometry) {
+            setBevPos(place.geometry.location.toJSON());
+          } else {
+            alert("Not a valid location chosen");
+          }
+        });
+      });
+    }
   });
 
   const toggleState = (state) => {
@@ -60,27 +60,18 @@ export default function AddBevForm() {
   const getCurrentLocation = async () => {
     if ("geolocation" in navigator) {
       var input = document.getElementById("bevLocation");
-      console.log("Available");
+      setGatheringLocation(true);
       input.value = "Getting Current Location Address";
       var lat = 0;
       var lng = 0;
       navigator.geolocation.getCurrentPosition(async function (position) {
         lat = position.coords.latitude;
         lng = position.coords.longitude;
-        console.log(lat, lng);
         setBevPos({
           lat: lat,
           lng: lng,
         });
 
-        console.log(
-          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            String(lat) +
-            "," +
-            String(lng) +
-            "&key=" +
-            GOOGLE_API_KEY
-        );
         const response = await fetch(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
             String(lat) +
@@ -93,8 +84,8 @@ export default function AddBevForm() {
           }
         );
         const data = await response.json();
-        console.log(data);
         input.value = data.results[0].formatted_address;
+        setGatheringLocation(false);
       });
     } else {
       alert("Using Current Location is not available");
@@ -170,7 +161,6 @@ export default function AddBevForm() {
       const bevID = backendData["_id"];
       // https://stackoverflow.com/questions/3486625/remove-illegal-url-characters-with-javascript
       imgLocation += bevID + "/" + img.name.replace(/[^a-zA-Z0-9-_]/g, "");
-      console.log(imgLocation, img);
 
       var upload = new AWS.S3.ManagedUpload({
         params: {
@@ -185,7 +175,6 @@ export default function AddBevForm() {
           const imgURL =
             "https://csci5117-project1-rankit.s3.us-east-2.amazonaws.com/" +
             imgLocation;
-          console.log("IMG URL", imgURL);
           const imdLocData = {
             imgURL: imgURL,
           };
@@ -194,14 +183,13 @@ export default function AddBevForm() {
             {
               method: "PATCH",
               headers: {
-                "x-apikey": API_KEY,
+                Authorization: "Bearer " + token,
                 "Content-Type": "application/json",
               },
               body: JSON.stringify(imdLocData),
             }
           );
           const updateImageData = await updateImageResponse.json();
-          console.log(updateImageData);
           router.push("/map");
         },
         function (err) {
@@ -217,17 +205,20 @@ export default function AddBevForm() {
   };
 
   if (loading) {
-    return <div>Loading!</div>;
+    return <Loading />;
   } else {
     return (
       <>
         <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1359.0.js"></script>
-		<LoadScriptNext googleMapsApiKey={GOOGLE_API_KEY} libraries={["places"]} />
+        <LoadScriptNext
+          googleMapsApiKey={GOOGLE_API_KEY}
+          libraries={["places"]}
+        />
         <div class="section">
           <div class="container">
             <form>
               <div class="columns">
-                <div class="column">
+                <div class="column centerElement">
                   <div class="is-hidden" id="photoPreviewDiv">
                     <img
                       style={{ margin: "0 auto" }}
@@ -324,7 +315,7 @@ export default function AddBevForm() {
                       <textarea
                         class="textarea"
                         id="bevDescription"
-                        placeholder="This beer sucked"
+                        placeholder="This drink sucked"
                       ></textarea>
                     </div>
                   </div>
@@ -335,13 +326,24 @@ export default function AddBevForm() {
               <div class="column">
                 <div class="field">
                   <div class="control">
-                    <button
-                      type="submit"
-                      onClick={handleSubmit}
-                      class="button is-success"
-                    >
-                      Save Entry!
-                    </button>
+                    {gatheringLocation ? (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success mt-2"
+                        disabled={true}
+                      >
+                        Attempting to access current location...
+                      </button>
+                    ) : (
+                      <button
+                        type="submit"
+                        onClick={handleSubmit}
+                        class="button is-success mt-2"
+                      >
+                        Save Entry!
+                      </button>
+                    )}
                   </div>
                 </div>
               </div>
